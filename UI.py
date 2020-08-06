@@ -108,7 +108,7 @@ class Button:
         self.width = breite_unten - abstand * 2
         self.height = breite_unten - abstand * 2
         self.pos = pos
-        self.x = abstand * pos + breite_unten * (pos - 1)
+        self.x = abstand + breite_unten * (pos - 1)
         self.y = screen_height - abstand - self.height
         self.font = font
         self.blink = False
