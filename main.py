@@ -9,11 +9,10 @@ from Mainscreen import *
 pygame.init()
 pygame.font.init()
 
-# TODO: Button Abstand
-# TODO: Gebäude ausbauen (Holz, Essen, Gold, Menschen)
-# TODO: Tooltip für Buttons
+# TODO: Tooltip für EInheiten
 # TODO: Pausemenu
 # TODO: Optionen (Fenster größe)
+# TODO: Chat breite bestimmen
 
 # TODO: Buttons spawnen dynamisch Minions
 # TODO: Minions greifen andere Base an
@@ -69,19 +68,46 @@ def button_8():
 
 
 def button_9():
-    Info.newmessage(text="Spieler hat 9-Taste gedrückt")
+    if Gold.amount >= base_1.gold*15 and Holz.amount >= base_1.holz*5 and Nahrung.amount >= 1:
+        Gold.amount -= base_1.gold*15
+        Holz.amount -= base_1.holz*5
+        Nahrung.amount -= 1
+        base_1.gold += 1
+        Info.newmessage(text="Die Goldmine wurde verbessert.")
+    else:
+        Info.newmessage(text="Die Goldmine ist zu teuer.")
 
 
 def button_10():
-    Info.newmessage(text="Spieler hat 0-Taste gedrückt")
-
+    if Gold.amount >= base_1.gold*20 and Holz.amount >= base_1.holz*5 and Nahrung.amount >= 2:
+        Gold.amount -= base_1.gold*10
+        Holz.amount -= base_1.holz*5
+        Nahrung.amount -= 2
+        base_1.holz += 1
+        Info.newmessage(text="Die Holzhütte wurde verbessert.")
+    else:
+        Info.newmessage(text="Die Holzhütte ist zu teuer.")
 
 def button_11():
-    Info.newmessage(text="Spieler hat ß-Taste gedrückt")
+    if Gold.amount >= base_1.gold * 15 and Holz.amount >= base_1.holz * 15 and Menschen.amount >= 2:
+        Gold.amount -= base_1.gold * 15
+        Holz.amount -= base_1.holz * 15
+        Menschen.amount -= 2
+        base_1.nahrung += 1
+        Info.newmessage(text="Die Farm wurde verbessert.")
+    else:
+        Info.newmessage(text="Die Farm ist zu teuer.")
 
 
 def button_12():
-    Info.newmessage(text="Spieler hat ´-Taste gedrückt")
+    if Gold.amount >= base_1.gold * 10 and Holz.amount >= base_1.holz * 15 and Nahrung.amount >= 5:
+        Gold.amount -= base_1.gold * 10
+        Holz.amount -= base_1.holz * 10
+        Nahrung.amount -= 5
+        base_1.menschen += 1
+        Info.newmessage(text="Das Wohnhaus wurde verbessert.")
+    else:
+        Info.newmessage(text="Das Wohnhaus ist zu teuer.")
 
 
 def spielstart(spielaktiv):
@@ -91,6 +117,32 @@ def spielstart(spielaktiv):
     current_time = ""
 
     while spielaktiv:
+
+        # Spielfeld zeichnen
+        screen.fill(HINTERGRUND)
+        Info.update()
+
+        # Bar unten
+        pygame.draw.rect(screen, Farbe_UI_Unten, [0, screen_height - breite_unten, screen_width, breite_unten])
+        text2 = myfont3.render(current_time, False, (0, 0, 0))
+        screen.blit(text2, (int(screen_width / 2), screen_height - breite_unten))
+        eins.update()
+        zwei.update()
+        drei.update()
+        vier.update()
+        fuenf.update()
+        sechs.update()
+        sieben.update()
+        acht.update()
+        neun.update()
+        null.update()
+        sz.update()
+        kommaoben.update()
+        Gold.update(add=base_1.gold)
+        Holz.update(add=base_1.holz)
+        Nahrung.update(add=base_1.nahrung)
+        Menschen.update(add=base_1.menschen)
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 spielaktiv = False
@@ -122,7 +174,6 @@ def spielstart(spielaktiv):
                 elif kommaoben.collide(mx, my):
                     button_12()
 
-                base_1.hp = base_1.hp - 50
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_1:
                     button_1()
@@ -158,28 +209,40 @@ def spielstart(spielaktiv):
         mx, my = pygame.mouse.get_pos()
         if eins.collide(mx, my):
             eins.highlight()
+            Tooltip.update(x=mx, y=my, who=1)
         elif zwei.collide(mx, my):
             zwei.highlight()
+            Tooltip.update(x=mx, y=my, who=2)
         elif drei.collide(mx, my):
             drei.highlight()
+            Tooltip.update(x=mx, y=my, who=3)
         elif vier.collide(mx, my):
             vier.highlight()
+            Tooltip.update(x=mx, y=my, who=4)
         elif fuenf.collide(mx, my):
             fuenf.highlight()
+            Tooltip.update(x=mx, y=my, who=5)
         elif sechs.collide(mx, my):
             sechs.highlight()
+            Tooltip.update(x=mx, y=my, who=6)
         elif sieben.collide(mx, my):
             sieben.highlight()
+            Tooltip.update(x=mx, y=my, who=7)
         elif acht.collide(mx, my):
             acht.highlight()
+            Tooltip.update(x=mx, y=my, who=8)
         elif neun.collide(mx, my):
             neun.highlight()
+            Tooltip.update(x=mx, y=my, who=9, amount=base_1.gold)
         elif null.collide(mx, my):
             null.highlight()
+            Tooltip.update(x=mx, y=my, who=10, amount=base_1.holz)
         elif sz.collide(mx, my):
             sz.highlight()
+            Tooltip.update(x=mx, y=my, who=11, amount=base_1.nahrung)
         elif kommaoben.collide(mx, my):
             kommaoben.highlight()
+            Tooltip.update(x=mx, y=my, who=12, amount=base_1.menschen)
 
         ticks += 1
         if ticks >= 60:  # 1sek
@@ -189,37 +252,13 @@ def spielstart(spielaktiv):
             now = datetime.now()
             current_time = now.strftime("%H:%M:%S")
 
-            if sek % 3 == 0:  # alle 3 sek
+            if sek % 2 == 0:  # alle 2 sek
                 Gold.amount += base_1.gold
                 Holz.amount += base_1.holz
                 Nahrung.amount += base_1.nahrung
                 Menschen.amount += base_1.menschen
             if sek >= 60:
                 sek = 0
-
-        # Spielfeld zeichnen
-        screen.fill(HINTERGRUND)
-        Info.update()
-
-        pygame.draw.rect(screen, Farbe_UI_Unten, [0, screen_height - breite_unten, screen_width, breite_unten])
-        text2 = myfont3.render(current_time, False, (0, 0, 0))
-        screen.blit(text2, (int(screen_width / 2), screen_height - breite_unten))
-        eins.update()
-        zwei.update()
-        drei.update()
-        vier.update()
-        fuenf.update()
-        sechs.update()
-        sieben.update()
-        acht.update()
-        neun.update()
-        null.update()
-        sz.update()
-        kommaoben.update()
-        Gold.update()
-        Holz.update()
-        Nahrung.update()
-        Menschen.update()
 
         # Base update
         base_1.update()
@@ -337,6 +376,8 @@ neun = Button(display=screen, pos=9, text="9", color=WEISS, font=myfont2, color_
 null = Button(display=screen, pos=10, text="0", color=WEISS, font=myfont2, color_blink=SCHWARZ)
 sz = Button(display=screen, pos=11, text="ß", color=WEISS, font=myfont2, color_blink=SCHWARZ)
 kommaoben = Button(display=screen, pos=12, text="´", color=WEISS, font=myfont2, color_blink=SCHWARZ)
+
+Tooltip = Tooltip(display=screen, width=50, height=50, color=SCHWARZ)
 
 Gold = Resource(text="Gold", amount=100, pos=1, display=screen, add=base_1.gold, font=myfont3)
 Holz = Resource(text="Holz", amount=50, pos=2, display=screen, add=base_1.holz, font=myfont3)

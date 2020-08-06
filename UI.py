@@ -28,8 +28,6 @@ class Chat:
                 self.max_length = i - 1
                 break
 
-        # TODO: maximale Chatlänge, für jede Nachricht, ermitteln
-
     def update(self):
         pygame.draw.rect(self.display, WEISS, pygame.Rect(self.x, self.y, self.width, self.height))
         pygame.draw.rect(self.display, self.color, pygame.Rect(self.x, self.y, self.width, self.height), 1)
@@ -92,7 +90,8 @@ class Resource:
     # TODO: Doppelpunkt auf gleicher höhe
     # TODO: Resourcen Icons
 
-    def update(self):
+    def update(self, add):
+        self.add = add
         self.text = str(self.name + ": " + str(self.amount) + "(+" + str(self.add) + ")")
         text2 = self.font.render(self.text, False, (0, 0, 0))
         self.display.blit(text2,
@@ -119,7 +118,8 @@ class Button:
         if self.blink:
             self.blink = False
             pygame.draw.rect(self.display, self.border_color, [self.x - self.border_size, self.y - self.border_size,
-                                                               self.width + self.border_size*2, self.height + self.border_size*2])
+                                                               self.width + self.border_size * 2,
+                                                               self.height + self.border_size * 2])
 
         pygame.draw.rect(self.display, self.color, [self.x, self.y, self.width, self.height])
         text = self.font.render(str(self.text), False, (0, 0, 0))
@@ -133,3 +133,108 @@ class Button:
 
     def highlight(self):
         self.blink = True
+
+
+class Tooltip:
+    def __init__(self, width, height, color, display):
+        self.width = width
+        self.height = height
+        self.color = color
+        self.display = display
+        self.who = 0
+        self.font = pygame.font.SysFont('arial', 15)
+
+    def update(self, x, y, who, amount=0):
+
+        if who == 1:
+            pygame.draw.rect(self.display, WEISS, pygame.Rect(x, y - 300, 150, 250))
+            pygame.draw.rect(self.display, self.color, pygame.Rect(x, y - 300, 150, 250), 1)
+
+            text2 = self.font.render("Speer", False, (0, 0, 0))
+            self.display.blit(text2,
+                              (x + 2,
+                               y - 300))
+
+        elif who == 2:
+            x = 1
+        elif who == 3:
+            x = 2
+        elif who == 4:
+            x = 2
+        elif who == 5:
+            x = 2
+        elif who == 6:
+            x = 2
+        elif who == 7:
+            x = 2
+        elif who == 8:
+            x = 2
+        elif who == 9:
+            pygame.draw.rect(self.display, WEISS, pygame.Rect(x, y - 100, 155, 100))
+            pygame.draw.rect(self.display, self.color, pygame.Rect(x, y - 100, 155, 100), 1)
+
+            string = ["Goldmine Stufe: " + str(amount),
+                      "Verbessern zu +" + str(amount + 1) + " Gold für:",
+                      str(amount * 15) + " Gold",
+                      str(amount * 5) + " Holz",
+                      "1 Nahrung",
+                      "0 Bevölkerung",
+                      ]
+
+            for i in range(0, 6):
+                text2 = self.font.render(string[i], False, (0, 0, 0))
+                self.display.blit(text2,
+                                  (x + 2,
+                                   y - 100 + 15 * i))
+
+        elif who == 10:
+            pygame.draw.rect(self.display, WEISS, pygame.Rect(x, y - 100, 150, 100))
+            pygame.draw.rect(self.display, self.color, pygame.Rect(x, y - 100, 150, 100), 1)
+
+            string = ["Holzfällerhütte Stufe: " + str(amount),
+                      "Verbessern zu +" + str(amount + 1) + " Holz für:",
+                      str((amount + 1) * 10) + " Gold",
+                      str((amount + 1) * 5) + " Holz",
+                      "2 Nahrung",
+                      "0 Bevölkerung",
+                      ]
+
+            for i in range(0, 6):
+                text2 = self.font.render(string[i], False, (0, 0, 0))
+                self.display.blit(text2,
+                                  (x + 2,
+                                   y - 100 + 15 * i))
+        elif who == 11:
+            pygame.draw.rect(self.display, WEISS, pygame.Rect(x, y - 100, 175, 100))
+            pygame.draw.rect(self.display, self.color, pygame.Rect(x, y - 100, 175, 100), 1)
+
+            string = ["Farm Stufe: " + str(amount),
+                      "Verbessern zu +" + str(amount + 1) + " Nahrung für:",
+                      str((amount + 1) * 15) + " Gold",
+                      str((amount + 1) * 15) + " Holz",
+                      "0 Nahrung",
+                      "2 Bevölkerung",
+                      ]
+
+            for i in range(0, 6):
+                text2 = self.font.render(string[i], False, (0, 0, 0))
+                self.display.blit(text2,
+                                  (x + 2,
+                                   y - 100 + 15 * i))
+        elif who == 12:
+            pygame.draw.rect(self.display, WEISS, pygame.Rect(x, y - 100, 185, 100))
+            pygame.draw.rect(self.display, self.color, pygame.Rect(x, y - 100, 185, 100), 1)
+
+            string = ["Wohnhaus Stufe: " + str(amount),
+                      "Verbessern zu +" + str(amount + 1) + " Menschen für:",
+                      str((amount + 1) * 10) + " Gold",
+                      str((amount + 1) * 10) + " Holz",
+                      "5 Nahrung",
+                      "0 Bevölkerung",
+                      ]
+
+            for i in range(0, 6):
+                text2 = self.font.render(string[i], False, (0, 0, 0))
+                self.display.blit(text2,
+                                  (x + 2,
+                                   y - 100 + 15 * i))
