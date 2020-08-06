@@ -9,31 +9,10 @@ from Mainscreen import *
 pygame.init()
 pygame.font.init()
 
-# TODO: Tooltip für EInheiten
-# TODO: Pausemenu
-# TODO: Optionen (Fenster größe)
-# TODO: Chat breite bestimmen
-
-# TODO: Buttons spawnen dynamisch Minions
-# TODO: Minions greifen andere Base an
-# TODO: Base greift Minions an
-# TODO: Schaden berechnen
-# TODO: Minions greifen sich an
-# TODO: Gegener KI
-# TODO: verschiedene Karten (vordefinierte spawns)
-# TODO: UI überarbeiten
-# TODO: verschiedene Minions
-# TODO: Tooltip für die Minions
-# TODO: Hindernisse auf Karte
-# TODO: Minions grob steuern
-# TODO: Gegner auf Karte
-# TODO: Tag/Nacht Zyklus
-
-
 def button_1():
     if Gold.amount >= 50:
         Gold.amount -= 50
-        speer = Spawn(x=150, y=150, img="resources/speer.png", player=1, display = screen)
+        einheiten[0].visible = True
         Info.newmessage(text="Speer gespawnt")
     else:
         Info.newmessage(text="Nicht genug Gold: " + str(Gold.amount) + "/50")
@@ -68,9 +47,9 @@ def button_8():
 
 
 def button_9():
-    if Gold.amount >= base_1.gold*15 and Holz.amount >= base_1.holz*5 and Nahrung.amount >= 1:
-        Gold.amount -= base_1.gold*15
-        Holz.amount -= base_1.holz*5
+    if Gold.amount >= base_1.gold * 15 and Holz.amount >= base_1.holz * 5 and Nahrung.amount >= 1:
+        Gold.amount -= base_1.gold * 15
+        Holz.amount -= base_1.holz * 5
         Nahrung.amount -= 1
         base_1.gold += 1
         Info.newmessage(text="Die Goldmine wurde verbessert.")
@@ -79,14 +58,15 @@ def button_9():
 
 
 def button_10():
-    if Gold.amount >= base_1.gold*20 and Holz.amount >= base_1.holz*5 and Nahrung.amount >= 2:
-        Gold.amount -= base_1.gold*10
-        Holz.amount -= base_1.holz*5
+    if Gold.amount >= base_1.gold * 20 and Holz.amount >= base_1.holz * 5 and Nahrung.amount >= 2:
+        Gold.amount -= base_1.gold * 10
+        Holz.amount -= base_1.holz * 5
         Nahrung.amount -= 2
         base_1.holz += 1
         Info.newmessage(text="Die Holzhütte wurde verbessert.")
     else:
         Info.newmessage(text="Die Holzhütte ist zu teuer.")
+
 
 def button_11():
     if Gold.amount >= base_1.gold * 15 and Holz.amount >= base_1.holz * 15 and Menschen.amount >= 2:
@@ -110,11 +90,23 @@ def button_12():
         Info.newmessage(text="Das Wohnhaus ist zu teuer.")
 
 
+def spielpause(pause=True):
+    while pause:
+        Pause.update()
+        pygame.display.flip()
+        for event in pygame.event.get():
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    pause = False
+
+
 def spielstart(spielaktiv):
     ticks = 0
     sek = 0
 
     current_time = ""
+
+    einheiten = [Spawn(x=50, y=50, img="resources/speer.png", player=1, display=screen, visible=False)]
 
     while spielaktiv:
 
@@ -124,7 +116,7 @@ def spielstart(spielaktiv):
 
         # Bar unten
         pygame.draw.rect(screen, Farbe_UI_Unten, [0, screen_height - breite_unten, screen_width, breite_unten])
-        text2 = myfont3.render(current_time, False, (0, 0, 0))
+        text2 = myfont_uhr.render(current_time, False, (0, 0, 0))
         screen.blit(text2, (int(screen_width / 2), screen_height - breite_unten))
         eins.update()
         zwei.update()
@@ -146,7 +138,9 @@ def spielstart(spielaktiv):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 spielaktiv = False
-                print("Spieler hat Quit-Button angeklickt")
+            elif event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    spielpause()
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 mx, my = pygame.mouse.get_pos()
                 if eins.collide(mx, my):
@@ -264,6 +258,8 @@ def spielstart(spielaktiv):
         base_1.update()
         base_2.update()
 
+        einheiten[0].update(x=50, y=50)
+
         pygame.display.flip()
         clock.tick(60)
 
@@ -328,7 +324,7 @@ class Base:
 
 
 class Spawn:
-    def __init__(self, x, y, img, player, display):
+    def __init__(self, x, y, img, player, display, visible):
         self.schaden = 1
         self.x = x
         self.y = y
@@ -337,18 +333,25 @@ class Spawn:
         self.progress = 1
         self.player = player
         self.display = display
+        self.img = img
+        self.visible = visible
 
         # HP Bar
         # Icon
         self.base = pygame.image.load(img)
+        self.base = pygame.transform.scale(self.base, (50, 50))
         self.base_breite = self.base.get_size()[0]
         self.base_hoehe = self.base.get_size()[1]
 
-    def update(self):
+    def update(self, x, y):
         self.progress = self.hp / self.max_hp
         if self.hp < 0:
             self.hp = 0
-        self.display.blit(self.base, self.x, self.y)
+        if self.visible:
+            self.display.blit(self.base, (int(x), int(y)))
+
+    def visible(self, visible):
+        self.visible = visible
 
 
 # Fenster öffnen
@@ -364,25 +367,27 @@ clock = pygame.time.Clock()
 base_1 = Base(img="resources/castle_red.png", player=1, display=screen, color=GRUEN)
 base_2 = Base(img="resources/castle_red.png", player=2, display=screen, color=GRUEN)
 
-eins = Button(display=screen, pos=1, text="1", color=WEISS, font=myfont2, color_blink=SCHWARZ)
-zwei = Button(display=screen, pos=2, text="2", color=WEISS, font=myfont2, color_blink=SCHWARZ)
-drei = Button(display=screen, pos=3, text="3", color=WEISS, font=myfont2, color_blink=SCHWARZ)
-vier = Button(display=screen, pos=4, text="4", color=WEISS, font=myfont2, color_blink=SCHWARZ)
-fuenf = Button(display=screen, pos=5, text="5", color=WEISS, font=myfont2, color_blink=SCHWARZ)
-sechs = Button(display=screen, pos=6, text="6", color=WEISS, font=myfont2, color_blink=SCHWARZ)
-sieben = Button(display=screen, pos=7, text="7", color=WEISS, font=myfont2, color_blink=SCHWARZ)
-acht = Button(display=screen, pos=8, text="8", color=WEISS, font=myfont2, color_blink=SCHWARZ)
-neun = Button(display=screen, pos=9, text="9", color=WEISS, font=myfont2, color_blink=SCHWARZ)
-null = Button(display=screen, pos=10, text="0", color=WEISS, font=myfont2, color_blink=SCHWARZ)
-sz = Button(display=screen, pos=11, text="ß", color=WEISS, font=myfont2, color_blink=SCHWARZ)
-kommaoben = Button(display=screen, pos=12, text="´", color=WEISS, font=myfont2, color_blink=SCHWARZ)
+eins = Button(display=screen, pos=1, text="1", color=WEISS, font=myfont_button, color_blink=SCHWARZ)
+zwei = Button(display=screen, pos=2, text="2", color=WEISS, font=myfont_button, color_blink=SCHWARZ)
+drei = Button(display=screen, pos=3, text="3", color=WEISS, font=myfont_button, color_blink=SCHWARZ)
+vier = Button(display=screen, pos=4, text="4", color=WEISS, font=myfont_button, color_blink=SCHWARZ)
+fuenf = Button(display=screen, pos=5, text="5", color=WEISS, font=myfont_button, color_blink=SCHWARZ)
+sechs = Button(display=screen, pos=6, text="6", color=WEISS, font=myfont_button, color_blink=SCHWARZ)
+sieben = Button(display=screen, pos=7, text="7", color=WEISS, font=myfont_button, color_blink=SCHWARZ)
+acht = Button(display=screen, pos=8, text="8", color=WEISS, font=myfont_button, color_blink=SCHWARZ)
+neun = Button(display=screen, pos=9, text="9", color=WEISS, font=myfont_button, color_blink=SCHWARZ)
+null = Button(display=screen, pos=10, text="0", color=WEISS, font=myfont_button, color_blink=SCHWARZ)
+sz = Button(display=screen, pos=11, text="ß", color=WEISS, font=myfont_button, color_blink=SCHWARZ)
+kommaoben = Button(display=screen, pos=12, text="´", color=WEISS, font=myfont_button, color_blink=SCHWARZ)
+
+Pause = Text(display=screen, x=screen_width/2-200, y=screen_height/2-100, text="PAUSE", color=SCHWARZ, font=myfont_pause)
 
 Tooltip = Tooltip(display=screen, width=50, height=50, color=SCHWARZ)
 
-Gold = Resource(text="Gold", amount=100, pos=1, display=screen, add=base_1.gold, font=myfont3)
-Holz = Resource(text="Holz", amount=50, pos=2, display=screen, add=base_1.holz, font=myfont3)
-Nahrung = Resource(text="Nahrung", amount=50, pos=3, display=screen, add=base_1.nahrung, font=myfont3)
-Menschen = Resource(text="Bauern", amount=50, pos=4, display=screen, add=base_1.menschen, font=myfont3)
+Gold = Resource(text="Gold", amount=100, pos=1, display=screen, add=base_1.gold, font=myfont_ressourcen)
+Holz = Resource(text="Holz", amount=50, pos=2, display=screen, add=base_1.holz, font=myfont_ressourcen)
+Nahrung = Resource(text="Nahrung", amount=50, pos=3, display=screen, add=base_1.nahrung, font=myfont_ressourcen)
+Menschen = Resource(text="Bauern", amount=50, pos=4, display=screen, add=base_1.menschen, font=myfont_ressourcen)
 
 Info = Chat(display=screen, height=250, width=200, color=SCHWARZ, zeilen=13)
 

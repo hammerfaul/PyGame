@@ -238,3 +238,19 @@ class Tooltip:
                 self.display.blit(text2,
                                   (x + 2,
                                    y - 100 + 15 * i))
+
+
+class Text:
+    def __init__(self, text, x, y, font, display, color):
+        self.text = text
+        self.x = x
+        self.y = y
+        self.display = display
+        self.color = color
+        self.font = font
+
+    def update(self):
+        text2 = self.font.render(self.text, False, (0, 0, 0))
+        self.display.blit(text2,
+                          (self.x,
+                           self.y))
