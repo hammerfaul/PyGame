@@ -384,10 +384,10 @@ Pause = Text(display=screen, x=screen_width/2-200, y=screen_height/2-100, text="
 
 Tooltip = Tooltip(display=screen, width=50, height=50, color=SCHWARZ)
 
-Gold = Resource(text="Gold", amount=100, pos=1, display=screen, add=base_1.gold, font=myfont_ressourcen)
-Holz = Resource(text="Holz", amount=50, pos=2, display=screen, add=base_1.holz, font=myfont_ressourcen)
-Nahrung = Resource(text="Nahrung", amount=50, pos=3, display=screen, add=base_1.nahrung, font=myfont_ressourcen)
-Menschen = Resource(text="Bauern", amount=50, pos=4, display=screen, add=base_1.menschen, font=myfont_ressourcen)
+Gold = Resource(amount=100, pos=1, display=screen, add=base_1.gold, font=myfont_ressourcen, img="resources/gold.png")
+Holz = Resource(amount=50, pos=2, display=screen, add=base_1.holz, font=myfont_ressourcen, img="resources/wood.png")
+Nahrung = Resource(amount=50, pos=3, display=screen, add=base_1.nahrung, font=myfont_ressourcen, img="resources/food.png")
+Menschen = Resource(amount=50, pos=4, display=screen, add=base_1.menschen, font=myfont_ressourcen, img="resources/human.png")
 
 Info = Chat(display=screen, height=250, width=200, color=SCHWARZ, zeilen=13)
 

@@ -41,29 +41,28 @@ class Chat:
 
             text2 = self.font.render(str(buffer), False, (0, 0, 0))
 
-            if text2.get_width() > self.width-2:
+            if text2.get_width() > self.width - 2:
                 lines[zahl] = buffer2
                 buffer = text[i]
                 buffer2 = ""
                 zahl += 1
-            if len(text)-1 == i:
+            if len(text) - 1 == i:
                 lines[zahl] = buffer
 
-        for n in range(0, zahl+1):
+        for n in range(0, zahl + 1):
             for o in range(1, self.zeilen):
                 self.text[self.zeilen - o] = self.text[self.zeilen - o - 1]
                 self.alfa[self.zeilen - o] = self.alfa[self.zeilen - o - 1]
-            self.text[0] = lines[zahl-n]
+            self.text[0] = lines[zahl - n]
             self.alfa[0] = 255
 
 
 class Resource:
-    def __init__(self, display, text, amount, pos, add, font):
+    def __init__(self, display, amount, pos, add, font, img):
         self.amount = amount
-        self.name = text
         self.font = font
-        self.text = str(text + ": " + str(self.amount))
-        text2 = self.font.render(self.text, False, (0, 0, 0))
+        text = str("   : " + str(self.amount) + "(+0)")
+        text2 = self.font.render(text, False, (0, 0, 0))
         text2_height = text2.get_height()
         self.display = display
         self.add = add
@@ -81,14 +80,17 @@ class Resource:
             self.y = int(screen_height - text2_height)
             self.x = int(screen_width - r_abstand - 280)
 
+        self.icon = pygame.image.load(img)
+        self.icon = pygame.transform.scale(self.icon, (int(breite_unten / 2), int(breite_unten / 2)))
 
     def update(self, add):
         self.add = add
-        self.text = str(self.name + ": " + str(self.amount) + "(+" + str(self.add) + ")")
-        text2 = self.font.render(self.text, False, (0, 0, 0))
+        text = str("     : " + str(self.amount) + "(+" + str(self.add) + ")")
+        text2 = self.font.render(text, False, (0, 0, 0))
         self.display.blit(text2,
                           (self.x,
                            self.y))
+        self.display.blit(self.icon, (self.x, self.y))
 
 
 class Button:
