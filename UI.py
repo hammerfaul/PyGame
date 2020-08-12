@@ -16,18 +16,6 @@ class Chat:
         self.text = ["" for x in range(self.zeilen)]
         self.alfa = [0 for x in range(self.zeilen)]
 
-        for i in range(1, 50):
-            breitentest = ""
-            for o in range(1, i):
-                breitentest += "9"
-
-            text2 = self.font.render(str(breitentest), False, (0, 0, 0))
-            text2_width = text2.get_width()
-            if text2_width > self.width:
-                print("Max_Breite: " + str(i - 1))
-                self.max_length = i - 1
-                break
-
     def update(self):
         pygame.draw.rect(self.display, WEISS, pygame.Rect(self.x, self.y, self.width, self.height))
         pygame.draw.rect(self.display, self.color, pygame.Rect(self.x, self.y, self.width, self.height), 1)
@@ -42,24 +30,30 @@ class Chat:
                                self.y + text2_height * i))
 
     def newmessage(self, text):
-        if len(text) > self.max_length:
-            i = len(text) / self.max_length
-            i = math.ceil(i)
+        buffer = ""
+        buffer2 = ""
+        lines = ["" for x in range(self.zeilen)]
+        zahl = 0
 
-            lines = ["" for x in range(i)]
-            for n in range(0, i):
-                lines[n] = text[self.max_length * n:self.max_length * (n + 1)]
-                for o in range(1, self.zeilen):
-                    self.text[self.zeilen - o] = self.text[self.zeilen - o - 1]
-                    self.alfa[self.zeilen - o] = self.alfa[self.zeilen - o - 1]
-            for n in range(0, i):
-                self.text[n] = lines[n]
-                self.alfa[n] = 255
-        else:
-            for i in range(1, self.zeilen):
-                self.text[self.zeilen - i] = self.text[self.zeilen - i - 1]
-                self.alfa[self.zeilen - i] = self.alfa[self.zeilen - i - 1]
-            self.text[0] = text
+        for i in range(0, len(text)):
+            buffer2 = buffer
+            buffer += text[i]
+
+            text2 = self.font.render(str(buffer), False, (0, 0, 0))
+
+            if text2.get_width() > self.width-2:
+                lines[zahl] = buffer2
+                buffer = text[i]
+                buffer2 = ""
+                zahl += 1
+            if len(text)-1 == i:
+                lines[zahl] = buffer
+
+        for n in range(0, zahl+1):
+            for o in range(1, self.zeilen):
+                self.text[self.zeilen - o] = self.text[self.zeilen - o - 1]
+                self.alfa[self.zeilen - o] = self.alfa[self.zeilen - o - 1]
+            self.text[0] = lines[zahl-n]
             self.alfa[0] = 255
 
 
@@ -87,8 +81,6 @@ class Resource:
             self.y = int(screen_height - text2_height)
             self.x = int(screen_width - r_abstand - 280)
 
-    # TODO: Doppelpunkt auf gleicher höhe
-    # TODO: Resourcen Icons
 
     def update(self, add):
         self.add = add
