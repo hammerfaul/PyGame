@@ -39,4 +39,6 @@ myfont_ressourcen = pygame.font.SysFont('gillsans', int(breite_unten / 2))
 myfont_pause = pygame.font.SysFont('gillsans', 120)
 
 #minions
-m_speed = 0.4
+m_speed = 0.5
+speer_dmg = 100
+speer_hp = 5

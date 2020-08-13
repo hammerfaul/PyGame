@@ -144,10 +144,19 @@ class Tooltip:
             pygame.draw.rect(self.display, WEISS, pygame.Rect(x, y - 300, 150, 250))
             pygame.draw.rect(self.display, self.color, pygame.Rect(x, y - 300, 150, 250), 1)
 
-            text2 = self.font.render("Speer", False, (0, 0, 0))
-            self.display.blit(text2,
-                              (x + 2,
-                               y - 300))
+            string = ["Speerträger",
+                      "Schaden: " + str(speer_dmg) + ", Leben: " + str(speer_hp),
+                      "20 Gold",
+                      "5 Holz",
+                      "1 Nahrung",
+                      "2 Bevölkerung",
+                      ]
+
+            for i in range(0, 6):
+                text2 = self.font.render(string[i], False, (0, 0, 0))
+                self.display.blit(text2,
+                                  (x + 2,
+                                   y - 300 + 15 * i))
 
         elif who == 2:
             x = 1
@@ -168,7 +177,7 @@ class Tooltip:
             pygame.draw.rect(self.display, self.color, pygame.Rect(x, y - 100, 155, 100), 1)
 
             string = ["Goldmine Stufe: " + str(amount),
-                      "Verbessern zu +" + str(amount + 1) + " Gold für:",
+                      "Verbessern zu +" + str(amount+1) + " Gold für:",
                       str(amount * 15) + " Gold",
                       str(amount * 5) + " Holz",
                       "1 Nahrung",
@@ -186,9 +195,9 @@ class Tooltip:
             pygame.draw.rect(self.display, self.color, pygame.Rect(x, y - 100, 150, 100), 1)
 
             string = ["Holzfällerhütte Stufe: " + str(amount),
-                      "Verbessern zu +" + str(amount + 1) + " Holz für:",
-                      str((amount + 1) * 10) + " Gold",
-                      str((amount + 1) * 5) + " Holz",
+                      "Verbessern zu +" + str(amount+1) + " Holz für:",
+                      str(amount * 10) + " Gold",
+                      str(amount * 5) + " Holz",
                       "2 Nahrung",
                       "0 Bevölkerung",
                       ]
@@ -203,9 +212,9 @@ class Tooltip:
             pygame.draw.rect(self.display, self.color, pygame.Rect(x, y - 100, 175, 100), 1)
 
             string = ["Farm Stufe: " + str(amount),
-                      "Verbessern zu +" + str(amount + 1) + " Nahrung für:",
-                      str((amount + 1) * 15) + " Gold",
-                      str((amount + 1) * 15) + " Holz",
+                      "Verbessern zu +" + str(amount+1) + " Nahrung für:",
+                      str(amount * 15) + " Gold",
+                      str(amount * 15) + " Holz",
                       "0 Nahrung",
                       "2 Bevölkerung",
                       ]
@@ -220,9 +229,9 @@ class Tooltip:
             pygame.draw.rect(self.display, self.color, pygame.Rect(x, y - 100, 185, 100), 1)
 
             string = ["Wohnhaus Stufe: " + str(amount),
-                      "Verbessern zu +" + str(amount + 1) + " Menschen für:",
-                      str((amount + 1) * 10) + " Gold",
-                      str((amount + 1) * 10) + " Holz",
+                      "Verbessern zu +" + str(amount+1) + " Menschen für:",
+                      str(amount * 10) + " Gold",
+                      str(amount * 10) + " Holz",
                       "5 Nahrung",
                       "0 Bevölkerung",
                       ]

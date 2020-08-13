@@ -13,9 +13,9 @@ class Base:
         self.color = color
         self.dmg = base_dmg
         self.gold = 1
-        self.holz = 0
-        self.nahrung = 0
-        self.menschen = 0
+        self.holz = 1
+        self.nahrung = 1
+        self.menschen = 1
         self.player = player
 
         # base
@@ -67,17 +67,18 @@ class Base:
 
 
 class Spawn:
-    def __init__(self, x, y, img, player, display, visible):
-        self.schaden = 1
+    def __init__(self, x, y, img, player, display, visible, last, dmg, hp):
+        self.dmg = dmg
         self.x = x
         self.y = y
-        self.hp = 5
-        self.max_hp = 5
+        self.hp = hp
+        self.max_hp = hp
         self.progress = 1
         self.player = player
         self.display = display
         self.img = img
         self.visible = visible
+        self.last = last
 
         # HP Bar
         # Icon
@@ -93,10 +94,12 @@ class Spawn:
         if self.visible:
             self.display.blit(self.base, (self.x, self.y))
 
-    def visible(self, visible):
-        self.visible = visible
-
-    def move(self, targetx, targety):
+    def move(self, target, last):
+        targetx = target.x
+        targety = target.y
+        if target.img == "resources/castle_red.png":
+            targetx -= 35
+            targety += 15
         if self.x < targetx and self.y == targety:
             if targetx - self.x < m_speed:
                 self.x = targetx
@@ -170,3 +173,8 @@ class Spawn:
             else:
                 self.x -= math.sqrt(m_speed)
                 self.y -= math.sqrt(m_speed)
+
+        else:
+            if self.last != last:
+                target.hp -= self.dmg
+                self.last = last

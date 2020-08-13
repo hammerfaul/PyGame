@@ -14,18 +14,49 @@ minions_alive = 0
 minions = []
 number_minions = 10
 
+
+def missing(gold=0, wood=0, human=0, food=0):
+    g_missing = gold - Gold.amount
+    w_missing = wood - Holz.amount
+    h_missing = human - Menschen.amount
+    f_missing = food - Nahrung.amount
+    start = "Euch fehlt: "
+    strg = ""
+    if g_missing > 0:
+        strg += str(g_missing) + " Gold"
+    if w_missing > 0:
+        if strg != "":
+            strg += ", "
+            start = "Euch fehlen: "
+        strg += str(w_missing) + " Holz"
+    if h_missing > 0:
+        if strg != "":
+            strg += ", "
+            start = "Euch fehlen: "
+        strg += str(h_missing) + " Bevölkerung"
+    if f_missing > 0:
+        if strg != "":
+            strg += ", "
+            start = "Euch fehlen: "
+        strg += str(f_missing) + " Nahrung"
+    Info.newmessage(text=start + strg)
+
+
 def button_1():
-    if Gold.amount >= 50:
-        Gold.amount -= 50
+    if Gold.amount >= 20 and Holz.amount >= 5 and Menschen.amount >= 2 and Nahrung.amount >= 1:
+        Gold.amount -= 20
+        Holz.amount -= 5
+        Menschen.amount -= 2
+        Nahrung.amount -= 1
         global minions
         global minions_alive
         minions[minions_alive].visible = True
-        minions[minions_alive].x = base_1.x+60
-        minions[minions_alive].y = base_1.y+30
+        minions[minions_alive].x = base_1.x + 60
+        minions[minions_alive].y = base_1.y + 30
         minions_alive += 1
-        Info.newmessage(text="Speer gespawnt")
+        Info.newmessage(text="Speerträger gespawnt")
     else:
-        Info.newmessage(text="Nicht genug Gold: " + str(Gold.amount) + "/50")
+        missing(gold=20, wood=5, human=2, food=1)
 
 
 def button_2():
@@ -59,45 +90,45 @@ def button_8():
 def button_9():
     if Gold.amount >= base_1.gold * 15 and Holz.amount >= base_1.holz * 5 and Nahrung.amount >= 1:
         Gold.amount -= base_1.gold * 15
-        Holz.amount -= base_1.holz * 5
+        Holz.amount -= base_1.gold * 5
         Nahrung.amount -= 1
         base_1.gold += 1
         Info.newmessage(text="Die Goldmine wurde verbessert.")
     else:
-        Info.newmessage(text="Die Goldmine ist zu teuer.")
+        missing(gold=base_1.gold * 15, wood=base_1.gold * 5, food=1)
 
 
 def button_10():
-    if Gold.amount >= base_1.gold * 20 and Holz.amount >= base_1.holz * 5 and Nahrung.amount >= 2:
-        Gold.amount -= base_1.gold * 10
+    if Gold.amount >= base_1.holz * 20 and Holz.amount >= base_1.holz * 5 and Nahrung.amount >= 2:
+        Gold.amount -= base_1.holz * 10
         Holz.amount -= base_1.holz * 5
         Nahrung.amount -= 2
         base_1.holz += 1
         Info.newmessage(text="Die Holzhütte wurde verbessert.")
     else:
-        Info.newmessage(text="Die Holzhütte ist zu teuer.")
+        missing(gold=base_1.holz * 20, wood=base_1.holz * 5, food=2)
 
 
 def button_11():
-    if Gold.amount >= base_1.gold * 15 and Holz.amount >= base_1.holz * 15 and Menschen.amount >= 2:
-        Gold.amount -= base_1.gold * 15
-        Holz.amount -= base_1.holz * 15
+    if Gold.amount >= base_1.nahrung * 15 and Holz.amount >= base_1.nahrung * 15 and Menschen.amount >= 2:
+        Gold.amount -= base_1.nahrung * 15
+        Holz.amount -= base_1.nahrung * 15
         Menschen.amount -= 2
         base_1.nahrung += 1
         Info.newmessage(text="Die Farm wurde verbessert.")
     else:
-        Info.newmessage(text="Die Farm ist zu teuer.")
+        missing(gold=base_1.nahrung * 15, wood=base_1.nahrung * 15, human=2)
 
 
 def button_12():
-    if Gold.amount >= base_1.gold * 10 and Holz.amount >= base_1.holz * 15 and Nahrung.amount >= 5:
-        Gold.amount -= base_1.gold * 10
-        Holz.amount -= base_1.holz * 10
+    if Gold.amount >= base_1.menschen * 10 and Holz.amount >= base_1.menschen * 10 and Nahrung.amount >= 5:
+        Gold.amount -= base_1.menschen * 10
+        Holz.amount -= base_1.menschen * 10
         Nahrung.amount -= 5
         base_1.menschen += 1
         Info.newmessage(text="Das Wohnhaus wurde verbessert.")
     else:
-        Info.newmessage(text="Das Wohnhaus ist zu teuer.")
+        missing(gold=base_1.menschen * 10, wood=base_1.menschen * 10, food=5)
 
 
 def spielpause(pause=True):
@@ -118,7 +149,9 @@ def spielstart(spielaktiv):
     current_time = now.strftime("%H:%M:%S")
 
     for i in range(number_minions):
-        minions.append(Spawn(x=50, y=50, img="resources/speer.png", player=1, display=screen, visible=False))
+        minions.append(
+            Spawn(x=50, y=50, img="resources/speer.png", player=1, display=screen, visible=False, last=current_time,
+                  dmg=speer_dmg, hp=speer_hp))
 
     while spielaktiv:
 
@@ -272,7 +305,25 @@ def spielstart(spielaktiv):
 
         for i in range(number_minions):
             if minions[i].visible:
-                minions[i].move(targetx=base_2.x-35, targety=base_2.y+15)
+                minions[i].move(target=base_2, last=current_time)
+                if base_1.hp <= 0:
+                    pause = True
+                    while pause:
+                        Lose.update()
+                        pygame.display.flip()
+                        for event in pygame.event.get():
+                            if event.type == pygame.KEYDOWN:
+                                if event.key == pygame.K_ESCAPE:
+                                    pause = False
+                if base_2.hp <= 0:
+                    pause = True
+                    while pause:
+                        Win.update()
+                        pygame.display.flip()
+                        for event in pygame.event.get():
+                            if event.type == pygame.KEYDOWN:
+                                if event.key == pygame.K_ESCAPE:
+                                    pause = False
             minions[i].update()
 
         pygame.display.flip()
@@ -305,14 +356,21 @@ null = Button(display=screen, pos=10, text="0", color=WEISS, font=myfont_button,
 sz = Button(display=screen, pos=11, text="ß", color=WEISS, font=myfont_button, color_blink=SCHWARZ)
 kommaoben = Button(display=screen, pos=12, text="´", color=WEISS, font=myfont_button, color_blink=SCHWARZ)
 
-Pause = Text(display=screen, x=screen_width/2-200, y=screen_height/2-100, text="PAUSE", color=SCHWARZ, font=myfont_pause)
+Pause = Text(display=screen, x=screen_width / 2 - 200, y=screen_height / 2 - 100, text="PAUSE", color=SCHWARZ,
+             font=myfont_pause)
+Win = Text(display=screen, x=screen_width / 2 - 200, y=screen_height / 2 - 100, text="Gewonnen", color=SCHWARZ,
+           font=myfont_pause)
+Lose = Text(display=screen, x=screen_width / 2 - 200, y=screen_height / 2 - 100, text="Verloren", color=SCHWARZ,
+            font=myfont_pause)
 
 Tooltip = Tooltip(display=screen, width=50, height=50, color=SCHWARZ)
 
 Gold = Resource(amount=100, pos=1, display=screen, add=base_1.gold, font=myfont_ressourcen, img="resources/gold.png")
 Holz = Resource(amount=50, pos=2, display=screen, add=base_1.holz, font=myfont_ressourcen, img="resources/wood.png")
-Nahrung = Resource(amount=50, pos=3, display=screen, add=base_1.nahrung, font=myfont_ressourcen, img="resources/food.png")
-Menschen = Resource(amount=50, pos=4, display=screen, add=base_1.menschen, font=myfont_ressourcen, img="resources/human.png")
+Nahrung = Resource(amount=50, pos=3, display=screen, add=base_1.nahrung, font=myfont_ressourcen,
+                   img="resources/food.png")
+Menschen = Resource(amount=50, pos=4, display=screen, add=base_1.menschen, font=myfont_ressourcen,
+                    img="resources/human.png")
 
 Info = Chat(display=screen, height=250, width=200, color=SCHWARZ, zeilen=13)
 
