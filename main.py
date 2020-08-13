@@ -236,6 +236,34 @@ def button_12():
         missing(gold=Menschen.gold, wood=Menschen.wood, food=Menschen.food)
 
 
+def arestart():
+    base_2.hp = base_hp
+    base_1.hp = base_hp
+    R_Gold.amount = start_gold
+    R_Holz.amount = start_wood
+    R_Nahrung.amount = start_food
+    R_Menschen.amount = start_human
+    base_1.gold = 1
+    base_1.holz = 1
+    base_1.menschen = 1
+    base_1.nahrung = 1
+    Gold.gold = 15
+    Gold.wood = 5
+    Gold.food = 1
+    Holz.gold = 10
+    Holz.wood = 5
+    Holz.food = 2
+    Essen.gold = 15
+    Essen.wood = 15
+    Essen.human = 2
+    Menschen.gold = 10
+    Menschen.wood = 10
+    Menschen.food = 5
+
+    for i in range(number_minions):
+        minions[i].x = -1000
+
+
 def spielpause(pause=True):
     while pause:
         Pause.update()
@@ -248,6 +276,36 @@ def spielpause(pause=True):
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     pause = False
+
+
+def last_update(current_time):
+    screen.fill(HINTERGRUND)
+    Info.update()
+    pygame.draw.rect(screen, Farbe_UI_Unten,
+                     [0, screen_height - breite_unten, screen_width, breite_unten])
+    text2 = myfont_uhr.render(current_time, False, (0, 0, 0))
+    screen.blit(text2, (int(screen_width / 2 - text2.get_width() / 2), screen_height - breite_unten))
+    eins.update()
+    zwei.update()
+    drei.update()
+    vier.update()
+    fuenf.update()
+    sechs.update()
+    sieben.update()
+    acht.update()
+    neun.update()
+    null.update()
+    sz.update()
+    kommaoben.update()
+    R_Gold.update()
+    R_Holz.update()
+    R_Nahrung.update()
+    R_Menschen.update()
+    base_1.update()
+    base_2.update()
+    for i in range(number_minions):
+        minions[i].update()
+    pygame.display.flip()
 
 
 def spielstart(spielaktiv):
@@ -284,10 +342,10 @@ def spielstart(spielaktiv):
         null.update()
         sz.update()
         kommaoben.update()
-        R_Gold.update(add=base_1.gold)
-        R_Holz.update(add=base_1.holz)
-        R_Nahrung.update(add=base_1.nahrung)
-        R_Menschen.update(add=base_1.menschen)
+        R_Gold.update()
+        R_Holz.update()
+        R_Nahrung.update()
+        R_Menschen.update()
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -400,7 +458,7 @@ def spielstart(spielaktiv):
             now = datetime.now()
             current_time = now.strftime("%H:%M:%S")
 
-            if sek % 2 == 0:  # alle 2 sek
+            if sek % 1 == 0:
                 R_Gold.amount += base_1.gold
                 R_Holz.amount += base_1.holz
                 R_Nahrung.amount += base_1.nahrung
@@ -416,89 +474,62 @@ def spielstart(spielaktiv):
             if minions[i].visible:
                 minions[i].move(target=base_2, last=current_time)
                 if base_1.hp <= 0:
-                    screen.fill(HINTERGRUND)
-                    Info.update()
-                    pygame.draw.rect(screen, Farbe_UI_Unten,
-                                     [0, screen_height - breite_unten, screen_width, breite_unten])
-                    text2 = myfont_uhr.render(current_time, False, (0, 0, 0))
-                    screen.blit(text2, (int(screen_width / 2), screen_height - breite_unten))
-                    eins.update()
-                    zwei.update()
-                    drei.update()
-                    vier.update()
-                    fuenf.update()
-                    sechs.update()
-                    sieben.update()
-                    acht.update()
-                    neun.update()
-                    null.update()
-                    sz.update()
-                    kommaoben.update()
-                    R_Gold.update(add=base_1.gold)
-                    R_Holz.update(add=base_1.holz)
-                    R_Nahrung.update(add=base_1.nahrung)
-                    R_Menschen.update(add=base_1.menschen)
-                    base_1.update()
-                    base_2.update()
-                    for i in range(number_minions):
-                        minions[i].update()
-                    pygame.display.flip()
+                    last_update(current_time=current_time)
                     pause = True
                     while pause:
                         Lose.update()
+                        restart.update()
                         pygame.display.flip()
                         for event in pygame.event.get():
                             if event.type == pygame.KEYDOWN:
                                 if event.key == pygame.K_ESCAPE:
                                     spielaktiv = False
                                     pause = False
+                            elif event.type == pygame.QUIT:
+                                pygame.display.quit()
+                                pygame.quit()
+                                exit()
+                            elif event.type == pygame.MOUSEBUTTONDOWN:
+                                mx, my = pygame.mouse.get_pos()
+                                if restart.collide(mx, my):
+                                    pause = False
+                                    arestart()
+                                    break
+                        screen.fill(HINTERGRUND)
 
                 if base_2.hp <= 0:
-                    screen.fill(HINTERGRUND)
-                    Info.update()
-                    pygame.draw.rect(screen, Farbe_UI_Unten,
-                                     [0, screen_height - breite_unten, screen_width, breite_unten])
-                    text2 = myfont_uhr.render(current_time, False, (0, 0, 0))
-                    screen.blit(text2, (int(screen_width / 2), screen_height - breite_unten))
-                    eins.update()
-                    zwei.update()
-                    drei.update()
-                    vier.update()
-                    fuenf.update()
-                    sechs.update()
-                    sieben.update()
-                    acht.update()
-                    neun.update()
-                    null.update()
-                    sz.update()
-                    kommaoben.update()
-                    R_Gold.update(add=base_1.gold)
-                    R_Holz.update(add=base_1.holz)
-                    R_Nahrung.update(add=base_1.nahrung)
-                    R_Menschen.update(add=base_1.menschen)
-                    base_1.update()
-                    base_2.update()
-                    for i in range(number_minions):
-                        minions[i].update()
-                    pygame.display.flip()
+                    last_update(current_time=current_time)
                     pause = True
                     while pause:
                         Win.update()
+                        restart.update()
                         pygame.display.flip()
+                        # hervorheben
+                        mx, my = pygame.mouse.get_pos()
+                        if restart.collide(mx, my):
+                            restart.highlight()
                         for event in pygame.event.get():
                             if event.type == pygame.KEYDOWN:
                                 if event.key == pygame.K_ESCAPE:
                                     spielaktiv = False
                                     pause = False
+                            elif event.type == pygame.QUIT:
+                                pygame.display.quit()
+                                pygame.quit()
+                                exit()
+                            elif event.type == pygame.MOUSEBUTTONDOWN:
+                                mx, my = pygame.mouse.get_pos()
+                                if restart.collide(mx, my):
+                                    pause = False
+                                    arestart()
+                                    break
+                        screen.fill(HINTERGRUND)
 
             minions[i].update()
 
         pygame.display.flip()
         clock.tick(60)
 
-
-# Fenster öffnen
-screen = pygame.display.set_mode((screen_width, screen_height))
 
 # user32 = ctypes.windll.user32
 # monitor_size = user32.GetSystemMetrics(0), user32.GetSystemMetrics(1)
@@ -507,44 +538,22 @@ pygame.display.set_caption(game_name)
 
 clock = pygame.time.Clock()
 
-base_1 = Base(img="resources/castle_red.png", player=1, display=screen, color=GRUEN)
-base_2 = Base(img="resources/castle_red.png", player=2, display=screen, color=GRUEN)
 
-Gold = Kosten(gold=15, wood=5, food=1, human=0, dmg=0, hp=0, speed=0)
-Holz = Kosten(gold=10, wood=5, food=2, human=0, dmg=0, hp=0, speed=0)
-Essen = Kosten(gold=15, wood=15, food=0, human=2, dmg=0, hp=0, speed=0)
-Menschen = Kosten(gold=10, wood=10, food=5, human=0, dmg=0, hp=0, speed=0)
-
-eins = Button(display=screen, pos=1, text="1", color=WEISS, font=myfont_button, color_blink=SCHWARZ)
-zwei = Button(display=screen, pos=2, text="2", color=WEISS, font=myfont_button, color_blink=SCHWARZ)
-drei = Button(display=screen, pos=3, text="3", color=WEISS, font=myfont_button, color_blink=SCHWARZ)
-vier = Button(display=screen, pos=4, text="4", color=WEISS, font=myfont_button, color_blink=SCHWARZ)
-fuenf = Button(display=screen, pos=5, text="5", color=WEISS, font=myfont_button, color_blink=SCHWARZ)
-sechs = Button(display=screen, pos=6, text="6", color=WEISS, font=myfont_button, color_blink=SCHWARZ)
-sieben = Button(display=screen, pos=7, text="7", color=WEISS, font=myfont_button, color_blink=SCHWARZ)
-acht = Button(display=screen, pos=8, text="8", color=WEISS, font=myfont_button, color_blink=SCHWARZ)
-neun = Button(display=screen, pos=9, text="9", color=WEISS, font=myfont_button, color_blink=SCHWARZ)
-null = Button(display=screen, pos=10, text="0", color=WEISS, font=myfont_button, color_blink=SCHWARZ)
-sz = Button(display=screen, pos=11, text="ß", color=WEISS, font=myfont_button, color_blink=SCHWARZ)
-kommaoben = Button(display=screen, pos=12, text="´", color=WEISS, font=myfont_button, color_blink=SCHWARZ)
+restart = Menu(display=screen, x=screen_width / 2 - screen_width * (1 / 5) / 2, y=screen_height / 6 * 5,
+               text="Neustart", color=WEISS,
+               font=myfont_menu, height=50, width=screen_width * (1 / 5), color_blink=ROT)
 
 Pause = Text(display=screen, x=screen_width / 2 - 200, y=screen_height / 2 - 100, text="PAUSE", color=SCHWARZ,
              font=myfont_pause)
-Win = Text(display=screen, x=screen_width / 2 - 200, y=screen_height / 2 - 100, text="Gewonnen", color=SCHWARZ,
+Win = Text(display=screen, x=screen_width / 2 - 300, y=screen_height / 2 - 100, text="Gewonnen", color=SCHWARZ,
            font=myfont_pause)
-Lose = Text(display=screen, x=screen_width / 2 - 200, y=screen_height / 2 - 100, text="Verloren", color=SCHWARZ,
+Lose = Text(display=screen, x=screen_width / 2 - 300, y=screen_height / 2 - 100, text="Verloren", color=SCHWARZ,
             font=myfont_pause)
 
-Tooltip = Tooltip(display=screen, width=50, height=50, color=SCHWARZ)
-
-R_Gold = Resource(amount=100, pos=1, display=screen, add=base_1.gold, font=myfont_ressourcen, img="resources/gold.png")
-R_Holz = Resource(amount=50, pos=2, display=screen, add=base_1.holz, font=myfont_ressourcen, img="resources/wood.png")
-R_Nahrung = Resource(amount=50, pos=3, display=screen, add=base_1.nahrung, font=myfont_ressourcen,
-                     img="resources/food.png")
-R_Menschen = Resource(amount=50, pos=4, display=screen, add=base_1.menschen, font=myfont_ressourcen,
-                      img="resources/human.png")
-
-Info = Chat(display=screen, height=250, width=200, color=SCHWARZ, zeilen=13)
+R_Gold.add = base_1.gold
+R_Holz.add = base_1.holz
+R_Nahrung.add = base_1.nahrung
+R_Menschen.add = base_1.menschen
 
 # Schleife Hauptprogramm
 mainscreen(display=screen, mainscreen_width=screen_width, mainscreen_height=screen_height)

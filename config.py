@@ -7,6 +7,10 @@ game_name = "Nur ein toller Test"
 # base
 base_hp = 1000
 base_dmg = 5
+start_gold = 100
+start_wood = 50
+start_food = 50
+start_human = 50
 
 # resources
 r_abstand = 5
@@ -63,3 +67,10 @@ Horse = Kosten(gold=20, wood=5, food=2, human=1, dmg=100, hp=5, speed=1)
 Berserk = Kosten(gold=20, wood=5, food=2, human=1, dmg=100, hp=5, speed=0.5)
 Mage = Kosten(gold=20, wood=5, food=2, human=1, dmg=100, hp=5, speed=0.5)
 Priest = Kosten(gold=20, wood=5, food=2, human=1, dmg=100, hp=5, speed=0.5)
+
+Gold = Kosten(gold=15, wood=5, food=1, human=0, dmg=0, hp=0, speed=0)
+Holz = Kosten(gold=10, wood=5, food=2, human=0, dmg=0, hp=0, speed=0)
+Essen = Kosten(gold=15, wood=15, food=0, human=2, dmg=0, hp=0, speed=0)
+Menschen = Kosten(gold=10, wood=10, food=5, human=0, dmg=0, hp=0, speed=0)
+
+screen = pygame.display.set_mode((screen_width, screen_height))

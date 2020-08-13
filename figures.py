@@ -3,6 +3,7 @@ from config import *
 import pygame
 import math
 
+
 class Base:
     def __init__(self, display, player, img, color):
         self.display = display
@@ -130,7 +131,7 @@ class Spawn:
             elif targetx - self.x < self.speed and targety - self.y < self.speed:
                 self.x = targetx
                 self.y = targety
-            elif not(targetx - self.x < self.speed) and targety - self.y < self.speed:
+            elif not (targetx - self.x < self.speed) and targety - self.y < self.speed:
                 self.y = targety
                 self.x += math.sqrt(self.speed)
             else:
@@ -183,3 +184,7 @@ class Spawn:
             if self.last != last:
                 target.hp -= self.dmg
                 self.last = last
+
+
+base_1 = Base(img="resources/castle_red.png", player=1, display=screen, color=GRUEN)
+base_2 = Base(img="resources/castle_red.png", player=2, display=screen, color=GRUEN)

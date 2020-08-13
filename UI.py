@@ -83,8 +83,7 @@ class Resource:
         self.icon = pygame.image.load(img)
         self.icon = pygame.transform.scale(self.icon, (int(breite_unten / 2), int(breite_unten / 2)))
 
-    def update(self, add):
-        self.add = add
+    def update(self):
         text = str("     : " + str(self.amount) + "(+" + str(self.add) + ")")
         text2 = self.font.render(text, False, (0, 0, 0))
         self.display.blit(text2,
@@ -347,3 +346,31 @@ class Text:
         self.display.blit(text2,
                           (self.x,
                            self.y))
+
+
+eins = Button(display=screen, pos=1, text="1", color=WEISS, font=myfont_button, color_blink=SCHWARZ)
+zwei = Button(display=screen, pos=2, text="2", color=WEISS, font=myfont_button, color_blink=SCHWARZ)
+drei = Button(display=screen, pos=3, text="3", color=WEISS, font=myfont_button, color_blink=SCHWARZ)
+vier = Button(display=screen, pos=4, text="4", color=WEISS, font=myfont_button, color_blink=SCHWARZ)
+fuenf = Button(display=screen, pos=5, text="5", color=WEISS, font=myfont_button, color_blink=SCHWARZ)
+sechs = Button(display=screen, pos=6, text="6", color=WEISS, font=myfont_button, color_blink=SCHWARZ)
+sieben = Button(display=screen, pos=7, text="7", color=WEISS, font=myfont_button, color_blink=SCHWARZ)
+acht = Button(display=screen, pos=8, text="8", color=WEISS, font=myfont_button, color_blink=SCHWARZ)
+neun = Button(display=screen, pos=9, text="9", color=WEISS, font=myfont_button, color_blink=SCHWARZ)
+null = Button(display=screen, pos=10, text="0", color=WEISS, font=myfont_button, color_blink=SCHWARZ)
+sz = Button(display=screen, pos=11, text="ß", color=WEISS, font=myfont_button, color_blink=SCHWARZ)
+kommaoben = Button(display=screen, pos=12, text="´", color=WEISS, font=myfont_button, color_blink=SCHWARZ)
+
+R_Gold = Resource(amount=start_gold, pos=1, display=screen, add=0, font=myfont_ressourcen,
+                  img="resources/gold.png")
+R_Holz = Resource(amount=start_wood, pos=2, display=screen, add=0, font=myfont_ressourcen,
+                  img="resources/wood.png")
+R_Nahrung = Resource(amount=start_food, pos=3, display=screen, add=0, font=myfont_ressourcen,
+                     img="resources/food.png")
+R_Menschen = Resource(amount=start_human, pos=4, display=screen, add=0, font=myfont_ressourcen,
+                      img="resources/human.png")
+
+Info = Chat(display=screen, height=250, width=200, color=SCHWARZ, zeilen=13)
+
+
+Tooltip = Tooltip(display=screen, width=50, height=50, color=SCHWARZ)
