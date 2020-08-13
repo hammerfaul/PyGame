@@ -67,7 +67,7 @@ class Base:
 
 
 class Spawn:
-    def __init__(self, x, y, img, player, display, visible, last, dmg, hp):
+    def __init__(self, x, y, img, player, display, visible, last, dmg, hp, speed):
         self.dmg = dmg
         self.x = x
         self.y = y
@@ -79,6 +79,8 @@ class Spawn:
         self.img = img
         self.visible = visible
         self.last = last
+        self.speed = speed
+        self.new = True
 
         # HP Bar
         # Icon
@@ -101,80 +103,83 @@ class Spawn:
             targetx -= 35
             targety += 15
         if self.x < targetx and self.y == targety:
-            if targetx - self.x < m_speed:
+            if targetx - self.x < self.speed:
                 self.x = targetx
             else:
-                self.x += m_speed
+                self.x += self.speed
         elif self.y < targety and self.x == targetx:
-            if targety - self.y < m_speed:
+            if targety - self.y < self.speed:
                 self.y = targety
             else:
-                self.y += m_speed
+                self.y += self.speed
         elif self.y > targety and self.x == targetx:
-            if self.y - targety < m_speed:
+            if self.y - targety < self.speed:
                 self.y = targety
             else:
-                self.y -= m_speed
+                self.y -= self.speed
         elif self.x > targetx and self.y == targety:
-            if self.x - targetx < m_speed:
+            if self.x - targetx < self.speed:
                 self.x = targetx
             else:
-                self.x -= m_speed
+                self.x -= self.speed
 
         elif self.x < targetx and self.y < targety:
-            if targetx - self.x < m_speed and not (targety - self.y < m_speed):
+            if targetx - self.x < self.speed and not (targety - self.y < self.speed):
                 self.x = targetx
-                self.y += math.sqrt(m_speed)
-            elif targetx - self.x < m_speed and targety - self.y < m_speed:
+                self.y += math.sqrt(self.speed)
+            elif targetx - self.x < self.speed and targety - self.y < self.speed:
                 self.x = targetx
                 self.y = targety
-            elif not(targetx - self.x < m_speed) and targety - self.y < m_speed:
+            elif not(targetx - self.x < self.speed) and targety - self.y < self.speed:
                 self.y = targety
-                self.x += math.sqrt(m_speed)
+                self.x += math.sqrt(self.speed)
             else:
-                self.x += math.sqrt(m_speed)
-                self.y += math.sqrt(m_speed)
+                self.x += math.sqrt(self.speed)
+                self.y += math.sqrt(self.speed)
         elif self.x < targetx and self.y > targety:
-            if targetx - self.x < m_speed and not (self.y - targety < m_speed):
+            if targetx - self.x < self.speed and not (self.y - targety < self.speed):
                 self.x = targetx
-                self.y -= math.sqrt(m_speed)
-            elif targetx - self.x < m_speed and self.y - targety < m_speed:
+                self.y -= math.sqrt(self.speed)
+            elif targetx - self.x < self.speed and self.y - targety < self.speed:
                 self.x = targetx
                 self.y = targety
-            elif not (targetx - self.x < m_speed) and self.y - targety < m_speed:
+            elif not (targetx - self.x < self.speed) and self.y - targety < self.speed:
                 self.y = targety
-                self.x -= math.sqrt(m_speed)
+                self.x -= math.sqrt(self.speed)
             else:
-                self.x += math.sqrt(m_speed)
-                self.y -= math.sqrt(m_speed)
+                self.x += math.sqrt(self.speed)
+                self.y -= math.sqrt(self.speed)
         elif self.x > targetx and self.y < targety:
-            if self.x - targetx < m_speed and not (targety - self.y < m_speed):
+            if self.x - targetx < self.speed and not (targety - self.y < self.speed):
                 self.x = targetx
-                self.y += math.sqrt(m_speed)
-            elif self.x - targetx < m_speed and targety - self.y < m_speed:
+                self.y += math.sqrt(self.speed)
+            elif self.x - targetx < self.speed and targety - self.y < self.speed:
                 self.x = targetx
                 self.y = targety
-            elif not (self.x - targetx < m_speed) and targety - self.y < m_speed:
+            elif not (self.x - targetx < self.speed) and targety - self.y < self.speed:
                 self.y = targety
-                self.x -= math.sqrt(m_speed)
+                self.x -= math.sqrt(self.speed)
             else:
-                self.x -= math.sqrt(m_speed)
-                self.y += math.sqrt(m_speed)
+                self.x -= math.sqrt(self.speed)
+                self.y += math.sqrt(self.speed)
         elif self.x > targetx and self.y > targety:
-            if self.x - targetx < m_speed and not (targety - self.y < m_speed):
+            if self.x - targetx < self.speed and not (targety - self.y < self.speed):
                 self.x = targetx
-                self.y -= math.sqrt(m_speed)
-            elif self.x - targetx < m_speed and targety - self.y < m_speed:
+                self.y -= math.sqrt(self.speed)
+            elif self.x - targetx < self.speed and targety - self.y < self.speed:
                 self.x = targetx
                 self.y = targety
-            elif not (self.x - targetx < m_speed) and targety - self.y < m_speed:
+            elif not (self.x - targetx < self.speed) and targety - self.y < self.speed:
                 self.y = targety
-                self.x -= math.sqrt(m_speed)
+                self.x -= math.sqrt(self.speed)
             else:
-                self.x -= math.sqrt(m_speed)
-                self.y -= math.sqrt(m_speed)
+                self.x -= math.sqrt(self.speed)
+                self.y -= math.sqrt(self.speed)
 
         else:
+            if self.new:
+                self.last = last
+                self.new = False
             if self.last != last:
                 target.hp -= self.dmg
                 self.last = last

@@ -16,10 +16,10 @@ number_minions = 10
 
 
 def missing(gold=0, wood=0, human=0, food=0):
-    g_missing = gold - Gold.amount
-    w_missing = wood - Holz.amount
-    h_missing = human - Menschen.amount
-    f_missing = food - Nahrung.amount
+    g_missing = gold - R_Gold.amount
+    w_missing = wood - R_Holz.amount
+    h_missing = human - R_Menschen.amount
+    f_missing = food - R_Nahrung.amount
     start = "Euch fehlt: "
     strg = ""
     if g_missing > 0:
@@ -43,44 +43,141 @@ def missing(gold=0, wood=0, human=0, food=0):
 
 
 def button_1():
-    if Gold.amount >= 20 and Holz.amount >= 5 and Menschen.amount >= 2 and Nahrung.amount >= 1:
-        Gold.amount -= 20
-        Holz.amount -= 5
-        Menschen.amount -= 2
-        Nahrung.amount -= 1
+    if Speer.enought(R_Gold.amount, R_Holz.amount, R_Nahrung.amount, R_Menschen.amount):
+        R_Gold.amount -= Speer.gold
+        R_Holz.amount -= Speer.wood
+        R_Menschen.amount -= Speer.human
+        R_Nahrung.amount -= Speer.food
         global minions
         global minions_alive
         minions[minions_alive].visible = True
         minions[minions_alive].x = base_1.x + 60
         minions[minions_alive].y = base_1.y + 30
+        minions[minions_alive].speed = Speer.speed
         minions_alive += 1
         Info.newmessage(text="Speerträger gespawnt")
     else:
-        missing(gold=20, wood=5, human=2, food=1)
+        missing(gold=Speer.gold, wood=Speer.wood, human=Speer.human, food=Speer.food)
 
 
 def button_2():
-    Info.newmessage(text="Spieler hat 2-Taste gedrückt")
+    if Berserk.enought(R_Gold.amount, R_Holz.amount, R_Nahrung.amount, R_Menschen.amount):
+        R_Gold.amount -= Berserk.gold
+        R_Holz.amount -= Berserk.wood
+        R_Menschen.amount -= Berserk.human
+        R_Nahrung.amount -= Berserk.food
+        global minions
+        global minions_alive
+        minions[minions_alive].visible = True
+        minions[minions_alive].x = base_1.x + 60
+        minions[minions_alive].y = base_1.y + 30
+        minions[minions_alive].speed = Berserk.speed
+        minions[minions_alive].base = pygame.image.load("resources/beserker red.png")
+        minions[minions_alive].base = pygame.transform.scale(minions[minions_alive].base, (39, 39))
+        minions_alive += 1
+        Info.newmessage(text="Beserker gespawnt")
+    else:
+        missing(gold=Berserk.gold, wood=Berserk.wood, human=Berserk.human, food=Berserk.food)
 
 
 def button_3():
-    Info.newmessage(text="Spieler hat 3-Taste gedrückt")
+    if Archer.enought(R_Gold.amount, R_Holz.amount, R_Nahrung.amount, R_Menschen.amount):
+        R_Gold.amount -= Archer.gold
+        R_Holz.amount -= Archer.wood
+        R_Menschen.amount -= Archer.human
+        R_Nahrung.amount -= Archer.food
+        global minions
+        global minions_alive
+        minions[minions_alive].visible = True
+        minions[minions_alive].x = base_1.x + 60
+        minions[minions_alive].y = base_1.y + 30
+        minions[minions_alive].speed = Archer.speed
+        minions[minions_alive].base = pygame.image.load("resources/archer red.png")
+        minions[minions_alive].base = pygame.transform.scale(minions[minions_alive].base, (42, 42))
+        minions_alive += 1
+        Info.newmessage(text="Bogenschütze gespawnt")
+    else:
+        missing(gold=Archer.gold, wood=Archer.wood, human=Archer.human, food=Archer.food)
 
 
 def button_4():
-    Info.newmessage(text="Spieler hat 4-Taste gedrückt")
+    if Horse.enought(R_Gold.amount, R_Holz.amount, R_Nahrung.amount, R_Menschen.amount):
+        R_Gold.amount -= Horse.gold
+        R_Holz.amount -= Horse.wood
+        R_Menschen.amount -= Horse.human
+        R_Nahrung.amount -= Horse.food
+        global minions
+        global minions_alive
+        minions[minions_alive].visible = True
+        minions[minions_alive].x = base_1.x + 60
+        minions[minions_alive].y = base_1.y + 30
+        minions[minions_alive].speed = Horse.speed
+        minions[minions_alive].base = pygame.image.load("resources/horse red.png")
+        minions[minions_alive].base = pygame.transform.scale(minions[minions_alive].base, (50, 50))
+        minions_alive += 1
+        Info.newmessage(text="Reiter gespawnt")
+    else:
+        missing(gold=Horse.gold, wood=Horse.wood, human=Horse.human, food=Horse.food)
 
 
 def button_5():
-    Info.newmessage(text="Spieler hat 5-Taste gedrückt")
+    if Knight.enought(R_Gold.amount, R_Holz.amount, R_Nahrung.amount, R_Menschen.amount):
+        R_Gold.amount -= Knight.gold
+        R_Holz.amount -= Knight.wood
+        R_Menschen.amount -= Knight.human
+        R_Nahrung.amount -= Knight.food
+        global minions
+        global minions_alive
+        minions[minions_alive].visible = True
+        minions[minions_alive].x = base_1.x + 60
+        minions[minions_alive].y = base_1.y + 30
+        minions[minions_alive].speed = Knight.speed
+        minions[minions_alive].base = pygame.image.load("resources/knight red.png")
+        minions[minions_alive].base = pygame.transform.scale(minions[minions_alive].base, (35, 35))
+        minions_alive += 1
+        Info.newmessage(text="Ritter gespawnt")
+    else:
+        missing(gold=Knight.gold, wood=Knight.wood, human=Knight.human, food=Knight.food)
 
 
 def button_6():
-    Info.newmessage(text="Spieler hat 6-Taste gedrückt")
+    if Mage.enought(R_Gold.amount, R_Holz.amount, R_Nahrung.amount, R_Menschen.amount):
+        R_Gold.amount -= Mage.gold
+        R_Holz.amount -= Mage.wood
+        R_Menschen.amount -= Mage.human
+        R_Nahrung.amount -= Mage.food
+        global minions
+        global minions_alive
+        minions[minions_alive].visible = True
+        minions[minions_alive].x = base_1.x + 60
+        minions[minions_alive].y = base_1.y + 30
+        minions[minions_alive].speed = Mage.speed
+        minions[minions_alive].base = pygame.image.load("resources/mage red.png")
+        minions[minions_alive].base = pygame.transform.scale(minions[minions_alive].base, (60, 60))
+        minions_alive += 1
+        Info.newmessage(text="Magier gespawnt")
+    else:
+        missing(gold=Mage.gold, wood=Mage.wood, human=Mage.human, food=Mage.food)
 
 
 def button_7():
-    Info.newmessage(text="Spieler hat 7-Taste gedrückt")
+    if Priest.enought(R_Gold.amount, R_Holz.amount, R_Nahrung.amount, R_Menschen.amount):
+        R_Gold.amount -= Priest.gold
+        R_Holz.amount -= Priest.wood
+        R_Menschen.amount -= Priest.human
+        R_Nahrung.amount -= Priest.food
+        global minions
+        global minions_alive
+        minions[minions_alive].visible = True
+        minions[minions_alive].x = base_1.x + 60
+        minions[minions_alive].y = base_1.y + 30
+        minions[minions_alive].speed = Priest.speed
+        minions[minions_alive].base = pygame.image.load("resources/priest red.png")
+        minions[minions_alive].base = pygame.transform.scale(minions[minions_alive].base, (40, 40))
+        minions_alive += 1
+        Info.newmessage(text="Priester gespawnt")
+    else:
+        missing(gold=Priest.gold, wood=Priest.wood, human=Priest.human, food=Priest.food)
 
 
 def button_8():
@@ -88,52 +185,64 @@ def button_8():
 
 
 def button_9():
-    if Gold.amount >= base_1.gold * 15 and Holz.amount >= base_1.holz * 5 and Nahrung.amount >= 1:
-        Gold.amount -= base_1.gold * 15
-        Holz.amount -= base_1.gold * 5
-        Nahrung.amount -= 1
+    if Gold.enought(R_Gold.amount, R_Holz.amount, R_Nahrung.amount, R_Menschen.amount):
+        R_Gold.amount -= Gold.gold
+        R_Holz.amount -= Gold.wood
+        R_Nahrung.amount -= Gold.food
         base_1.gold += 1
+        Gold.gold = base_1.gold * 15
+        Gold.wood = base_1.gold * 5
         Info.newmessage(text="Die Goldmine wurde verbessert.")
     else:
-        missing(gold=base_1.gold * 15, wood=base_1.gold * 5, food=1)
+        missing(gold=Gold.gold, wood=Gold.wood, food=Gold.food)
 
 
 def button_10():
-    if Gold.amount >= base_1.holz * 20 and Holz.amount >= base_1.holz * 5 and Nahrung.amount >= 2:
-        Gold.amount -= base_1.holz * 10
-        Holz.amount -= base_1.holz * 5
-        Nahrung.amount -= 2
+    if Holz.enought(R_Gold.amount, R_Holz.amount, R_Nahrung.amount, R_Menschen.amount):
+        R_Gold.amount -= Holz.gold
+        R_Holz.amount -= Holz.wood
+        R_Nahrung.amount -= Holz.food
         base_1.holz += 1
+        Holz.gold = base_1.holz * 10
+        Holz.wood = base_1.holz * 5
         Info.newmessage(text="Die Holzhütte wurde verbessert.")
     else:
-        missing(gold=base_1.holz * 20, wood=base_1.holz * 5, food=2)
+        missing(gold=Holz.gold, wood=Holz.wood, food=Holz.food)
 
 
 def button_11():
-    if Gold.amount >= base_1.nahrung * 15 and Holz.amount >= base_1.nahrung * 15 and Menschen.amount >= 2:
-        Gold.amount -= base_1.nahrung * 15
-        Holz.amount -= base_1.nahrung * 15
-        Menschen.amount -= 2
+    if Essen.enought(R_Gold.amount, R_Holz.amount, R_Nahrung.amount, R_Menschen.amount):
+        R_Gold.amount -= Essen.gold
+        R_Holz.amount -= Essen.wood
+        R_Menschen.amount -= Essen.human
         base_1.nahrung += 1
+        Essen.gold = base_1.nahrung * 15
+        Essen.wood = base_1.nahrung * 15
         Info.newmessage(text="Die Farm wurde verbessert.")
     else:
-        missing(gold=base_1.nahrung * 15, wood=base_1.nahrung * 15, human=2)
+        missing(gold=Essen.gold, wood=Essen.wood * 15, human=Essen.human)
 
 
 def button_12():
-    if Gold.amount >= base_1.menschen * 10 and Holz.amount >= base_1.menschen * 10 and Nahrung.amount >= 5:
-        Gold.amount -= base_1.menschen * 10
-        Holz.amount -= base_1.menschen * 10
-        Nahrung.amount -= 5
+    if Menschen.enought(R_Gold.amount, R_Holz.amount, R_Nahrung.amount, R_Menschen.amount):
+        R_Gold.amount -= Menschen.gold
+        R_Holz.amount -= Menschen.wood
+        R_Nahrung.amount -= Menschen.food
         base_1.menschen += 1
+        Menschen.gold = base_1.menschen * 10
+        Menschen.wood = base_1.menschen * 10
         Info.newmessage(text="Das Wohnhaus wurde verbessert.")
     else:
-        missing(gold=base_1.menschen * 10, wood=base_1.menschen * 10, food=5)
+        missing(gold=Menschen.gold, wood=Menschen.wood, food=Menschen.food)
 
 
 def spielpause(pause=True):
     while pause:
         Pause.update()
+        base_1.update()
+        base_2.update()
+        for i in range(number_minions):
+            minions[i].update()
         pygame.display.flip()
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN:
@@ -150,8 +259,8 @@ def spielstart(spielaktiv):
 
     for i in range(number_minions):
         minions.append(
-            Spawn(x=50, y=50, img="resources/speer.png", player=1, display=screen, visible=False, last=current_time,
-                  dmg=speer_dmg, hp=speer_hp))
+            Spawn(x=50, y=50, img="resources/speer red.png", player=1, display=screen, visible=False, last=current_time,
+                  dmg=Speer.dmg, hp=Speer.hp, speed=Speer.speed))
 
     while spielaktiv:
 
@@ -175,10 +284,10 @@ def spielstart(spielaktiv):
         null.update()
         sz.update()
         kommaoben.update()
-        Gold.update(add=base_1.gold)
-        Holz.update(add=base_1.holz)
-        Nahrung.update(add=base_1.nahrung)
-        Menschen.update(add=base_1.menschen)
+        R_Gold.update(add=base_1.gold)
+        R_Holz.update(add=base_1.holz)
+        R_Nahrung.update(add=base_1.nahrung)
+        R_Menschen.update(add=base_1.menschen)
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -272,16 +381,16 @@ def spielstart(spielaktiv):
             Tooltip.update(x=mx, y=my, who=8)
         elif neun.collide(mx, my):
             neun.highlight()
-            Tooltip.update(x=mx, y=my, who=9, amount=base_1.gold)
+            Tooltip.update(x=mx, y=my, who=9, amount=base_1.gold, wer=Gold)
         elif null.collide(mx, my):
             null.highlight()
-            Tooltip.update(x=mx, y=my, who=10, amount=base_1.holz)
+            Tooltip.update(x=mx, y=my, who=10, amount=base_1.holz, wer=Holz)
         elif sz.collide(mx, my):
             sz.highlight()
-            Tooltip.update(x=mx, y=my, who=11, amount=base_1.nahrung)
+            Tooltip.update(x=mx, y=my, who=11, amount=base_1.nahrung, wer=Essen)
         elif kommaoben.collide(mx, my):
             kommaoben.highlight()
-            Tooltip.update(x=mx, y=my, who=12, amount=base_1.menschen)
+            Tooltip.update(x=mx, y=my, who=12, amount=base_1.menschen, wer=Menschen)
 
         ticks += 1
         if ticks >= 60:  # 1sek
@@ -292,10 +401,10 @@ def spielstart(spielaktiv):
             current_time = now.strftime("%H:%M:%S")
 
             if sek % 2 == 0:  # alle 2 sek
-                Gold.amount += base_1.gold
-                Holz.amount += base_1.holz
-                Nahrung.amount += base_1.nahrung
-                Menschen.amount += base_1.menschen
+                R_Gold.amount += base_1.gold
+                R_Holz.amount += base_1.holz
+                R_Nahrung.amount += base_1.nahrung
+                R_Menschen.amount += base_1.menschen
             if sek >= 60:
                 sek = 0
 
@@ -307,6 +416,33 @@ def spielstart(spielaktiv):
             if minions[i].visible:
                 minions[i].move(target=base_2, last=current_time)
                 if base_1.hp <= 0:
+                    screen.fill(HINTERGRUND)
+                    Info.update()
+                    pygame.draw.rect(screen, Farbe_UI_Unten,
+                                     [0, screen_height - breite_unten, screen_width, breite_unten])
+                    text2 = myfont_uhr.render(current_time, False, (0, 0, 0))
+                    screen.blit(text2, (int(screen_width / 2), screen_height - breite_unten))
+                    eins.update()
+                    zwei.update()
+                    drei.update()
+                    vier.update()
+                    fuenf.update()
+                    sechs.update()
+                    sieben.update()
+                    acht.update()
+                    neun.update()
+                    null.update()
+                    sz.update()
+                    kommaoben.update()
+                    R_Gold.update(add=base_1.gold)
+                    R_Holz.update(add=base_1.holz)
+                    R_Nahrung.update(add=base_1.nahrung)
+                    R_Menschen.update(add=base_1.menschen)
+                    base_1.update()
+                    base_2.update()
+                    for i in range(number_minions):
+                        minions[i].update()
+                    pygame.display.flip()
                     pause = True
                     while pause:
                         Lose.update()
@@ -314,8 +450,37 @@ def spielstart(spielaktiv):
                         for event in pygame.event.get():
                             if event.type == pygame.KEYDOWN:
                                 if event.key == pygame.K_ESCAPE:
+                                    spielaktiv = False
                                     pause = False
+
                 if base_2.hp <= 0:
+                    screen.fill(HINTERGRUND)
+                    Info.update()
+                    pygame.draw.rect(screen, Farbe_UI_Unten,
+                                     [0, screen_height - breite_unten, screen_width, breite_unten])
+                    text2 = myfont_uhr.render(current_time, False, (0, 0, 0))
+                    screen.blit(text2, (int(screen_width / 2), screen_height - breite_unten))
+                    eins.update()
+                    zwei.update()
+                    drei.update()
+                    vier.update()
+                    fuenf.update()
+                    sechs.update()
+                    sieben.update()
+                    acht.update()
+                    neun.update()
+                    null.update()
+                    sz.update()
+                    kommaoben.update()
+                    R_Gold.update(add=base_1.gold)
+                    R_Holz.update(add=base_1.holz)
+                    R_Nahrung.update(add=base_1.nahrung)
+                    R_Menschen.update(add=base_1.menschen)
+                    base_1.update()
+                    base_2.update()
+                    for i in range(number_minions):
+                        minions[i].update()
+                    pygame.display.flip()
                     pause = True
                     while pause:
                         Win.update()
@@ -323,7 +488,9 @@ def spielstart(spielaktiv):
                         for event in pygame.event.get():
                             if event.type == pygame.KEYDOWN:
                                 if event.key == pygame.K_ESCAPE:
+                                    spielaktiv = False
                                     pause = False
+
             minions[i].update()
 
         pygame.display.flip()
@@ -342,6 +509,11 @@ clock = pygame.time.Clock()
 
 base_1 = Base(img="resources/castle_red.png", player=1, display=screen, color=GRUEN)
 base_2 = Base(img="resources/castle_red.png", player=2, display=screen, color=GRUEN)
+
+Gold = Kosten(gold=15, wood=5, food=1, human=0, dmg=0, hp=0, speed=0)
+Holz = Kosten(gold=10, wood=5, food=2, human=0, dmg=0, hp=0, speed=0)
+Essen = Kosten(gold=15, wood=15, food=0, human=2, dmg=0, hp=0, speed=0)
+Menschen = Kosten(gold=10, wood=10, food=5, human=0, dmg=0, hp=0, speed=0)
 
 eins = Button(display=screen, pos=1, text="1", color=WEISS, font=myfont_button, color_blink=SCHWARZ)
 zwei = Button(display=screen, pos=2, text="2", color=WEISS, font=myfont_button, color_blink=SCHWARZ)
@@ -365,12 +537,12 @@ Lose = Text(display=screen, x=screen_width / 2 - 200, y=screen_height / 2 - 100,
 
 Tooltip = Tooltip(display=screen, width=50, height=50, color=SCHWARZ)
 
-Gold = Resource(amount=100, pos=1, display=screen, add=base_1.gold, font=myfont_ressourcen, img="resources/gold.png")
-Holz = Resource(amount=50, pos=2, display=screen, add=base_1.holz, font=myfont_ressourcen, img="resources/wood.png")
-Nahrung = Resource(amount=50, pos=3, display=screen, add=base_1.nahrung, font=myfont_ressourcen,
-                   img="resources/food.png")
-Menschen = Resource(amount=50, pos=4, display=screen, add=base_1.menschen, font=myfont_ressourcen,
-                    img="resources/human.png")
+R_Gold = Resource(amount=100, pos=1, display=screen, add=base_1.gold, font=myfont_ressourcen, img="resources/gold.png")
+R_Holz = Resource(amount=50, pos=2, display=screen, add=base_1.holz, font=myfont_ressourcen, img="resources/wood.png")
+R_Nahrung = Resource(amount=50, pos=3, display=screen, add=base_1.nahrung, font=myfont_ressourcen,
+                     img="resources/food.png")
+R_Menschen = Resource(amount=50, pos=4, display=screen, add=base_1.menschen, font=myfont_ressourcen,
+                      img="resources/human.png")
 
 Info = Chat(display=screen, height=250, width=200, color=SCHWARZ, zeilen=13)
 

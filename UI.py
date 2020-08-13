@@ -138,38 +138,128 @@ class Tooltip:
         self.who = 0
         self.font = pygame.font.SysFont('arial', 15)
 
-    def update(self, x, y, who, amount=0):
+    def update(self, x, y, who, wer=0, amount=0):
 
         if who == 1:
-            pygame.draw.rect(self.display, WEISS, pygame.Rect(x, y - 300, 150, 250))
-            pygame.draw.rect(self.display, self.color, pygame.Rect(x, y - 300, 150, 250), 1)
+            pygame.draw.rect(self.display, WEISS, pygame.Rect(x, y - 100, 150, 100))
+            pygame.draw.rect(self.display, self.color, pygame.Rect(x, y - 100, 150, 100), 1)
 
             string = ["Speerträger",
-                      "Schaden: " + str(speer_dmg) + ", Leben: " + str(speer_hp),
-                      "20 Gold",
-                      "5 Holz",
-                      "1 Nahrung",
-                      "2 Bevölkerung",
+                      "Schaden: " + str(Speer.dmg) + ", Leben: " + str(Speer.hp),
+                      str(Speer.gold) + " Gold",
+                      str(Speer.wood) + " Holz",
+                      str(Speer.food) + " Nahrung",
+                      str(Speer.human) + " Bevölkerung",
                       ]
 
             for i in range(0, 6):
                 text2 = self.font.render(string[i], False, (0, 0, 0))
                 self.display.blit(text2,
                                   (x + 2,
-                                   y - 300 + 15 * i))
+                                   y - 100 + 15 * i))
 
         elif who == 2:
-            x = 1
+            pygame.draw.rect(self.display, WEISS, pygame.Rect(x, y - 100, 150, 100))
+            pygame.draw.rect(self.display, self.color, pygame.Rect(x, y - 100, 150, 100), 1)
+
+            string = ["Beserker",
+                      "Schaden: " + str(Berserk.dmg) + ", Leben: " + str(Berserk.hp),
+                      str(Berserk.gold) + " Gold",
+                      str(Berserk.wood) + " Holz",
+                      str(Berserk.food) + " Nahrung",
+                      str(Berserk.human) + " Bevölkerung",
+                      ]
+
+            for i in range(0, 6):
+                text2 = self.font.render(string[i], False, (0, 0, 0))
+                self.display.blit(text2,
+                                  (x + 2,
+                                   y - 100 + 15 * i))
         elif who == 3:
-            x = 2
+            pygame.draw.rect(self.display, WEISS, pygame.Rect(x, y - 100, 150, 100))
+            pygame.draw.rect(self.display, self.color, pygame.Rect(x, y - 100, 150, 100), 1)
+
+            string = ["Bogenschütze",
+                      "Schaden: " + str(Archer.dmg) + ", Leben: " + str(Archer.hp),
+                      str(Archer.gold) + " Gold",
+                      str(Archer.wood) + " Holz",
+                      str(Archer.food) + " Nahrung",
+                      str(Archer.human) + " Bevölkerung",
+                      ]
+
+            for i in range(0, 6):
+                text2 = self.font.render(string[i], False, (0, 0, 0))
+                self.display.blit(text2,
+                                  (x + 2,
+                                   y - 100 + 15 * i))
         elif who == 4:
-            x = 2
+            pygame.draw.rect(self.display, WEISS, pygame.Rect(x, y - 100, 150, 100))
+            pygame.draw.rect(self.display, self.color, pygame.Rect(x, y - 100, 150, 100), 1)
+
+            string = ["Reiter",
+                      "Schaden: " + str(Horse.dmg) + ", Leben: " + str(Horse.hp),
+                      str(Horse.gold) + " Gold",
+                      str(Horse.wood) + " Holz",
+                      str(Horse.food) + " Nahrung",
+                      str(Horse.human) + " Bevölkerung",
+                      ]
+
+            for i in range(0, 6):
+                text2 = self.font.render(string[i], False, (0, 0, 0))
+                self.display.blit(text2,
+                                  (x + 2,
+                                   y - 100 + 15 * i))
         elif who == 5:
-            x = 2
+            pygame.draw.rect(self.display, WEISS, pygame.Rect(x, y - 100, 150, 100))
+            pygame.draw.rect(self.display, self.color, pygame.Rect(x, y - 100, 150, 100), 1)
+
+            string = ["Ritter",
+                      "Schaden: " + str(Knight.dmg) + ", Leben: " + str(Knight.hp),
+                      str(Knight.gold) + " Gold",
+                      str(Knight.wood) + " Holz",
+                      str(Knight.food) + " Nahrung",
+                      str(Knight.human) + " Bevölkerung",
+                      ]
+
+            for i in range(0, 6):
+                text2 = self.font.render(string[i], False, (0, 0, 0))
+                self.display.blit(text2,
+                                  (x + 2,
+                                   y - 100 + 15 * i))
         elif who == 6:
-            x = 2
+            pygame.draw.rect(self.display, WEISS, pygame.Rect(x, y - 100, 150, 100))
+            pygame.draw.rect(self.display, self.color, pygame.Rect(x, y - 100, 150, 100), 1)
+
+            string = ["Magier",
+                      "Schaden: " + str(Mage.dmg) + ", Leben: " + str(Mage.hp),
+                      str(Mage.gold) + " Gold",
+                      str(Mage.wood) + " Holz",
+                      str(Mage.food) + " Nahrung",
+                      str(Mage.human) + " Bevölkerung",
+                      ]
+
+            for i in range(0, 6):
+                text2 = self.font.render(string[i], False, (0, 0, 0))
+                self.display.blit(text2,
+                                  (x + 2,
+                                   y - 100 + 15 * i))
         elif who == 7:
-            x = 2
+            pygame.draw.rect(self.display, WEISS, pygame.Rect(x, y - 100, 150, 100))
+            pygame.draw.rect(self.display, self.color, pygame.Rect(x, y - 100, 150, 100), 1)
+
+            string = ["Priester",
+                      "AOE-Heilung: " + str(Priest.dmg) + ", Leben: " + str(Priest.hp),
+                      str(Priest.gold) + " Gold",
+                      str(Priest.wood) + " Holz",
+                      str(Priest.food) + " Nahrung",
+                      str(Priest.human) + " Bevölkerung",
+                      ]
+
+            for i in range(0, 6):
+                text2 = self.font.render(string[i], False, (0, 0, 0))
+                self.display.blit(text2,
+                                  (x + 2,
+                                   y - 100 + 15 * i))
         elif who == 8:
             x = 2
         elif who == 9:
@@ -178,10 +268,10 @@ class Tooltip:
 
             string = ["Goldmine Stufe: " + str(amount),
                       "Verbessern zu +" + str(amount+1) + " Gold für:",
-                      str(amount * 15) + " Gold",
-                      str(amount * 5) + " Holz",
-                      "1 Nahrung",
-                      "0 Bevölkerung",
+                      str(wer.gold) + " Gold",
+                      str(wer.wood) + " Holz",
+                      str(wer.food) + " Nahrung",
+                      str(wer.human) + " Bevölkerung",
                       ]
 
             for i in range(0, 6):
@@ -196,10 +286,10 @@ class Tooltip:
 
             string = ["Holzfällerhütte Stufe: " + str(amount),
                       "Verbessern zu +" + str(amount+1) + " Holz für:",
-                      str(amount * 10) + " Gold",
-                      str(amount * 5) + " Holz",
-                      "2 Nahrung",
-                      "0 Bevölkerung",
+                      str(wer.gold) + " Gold",
+                      str(wer.wood) + " Holz",
+                      str(wer.food) + " Nahrung",
+                      str(wer.human) + " Bevölkerung",
                       ]
 
             for i in range(0, 6):
@@ -213,10 +303,10 @@ class Tooltip:
 
             string = ["Farm Stufe: " + str(amount),
                       "Verbessern zu +" + str(amount+1) + " Nahrung für:",
-                      str(amount * 15) + " Gold",
-                      str(amount * 15) + " Holz",
-                      "0 Nahrung",
-                      "2 Bevölkerung",
+                      str(wer.gold) + " Gold",
+                      str(wer.wood) + " Holz",
+                      str(wer.food) + " Nahrung",
+                      str(wer.human) + " Bevölkerung",
                       ]
 
             for i in range(0, 6):
@@ -230,10 +320,10 @@ class Tooltip:
 
             string = ["Wohnhaus Stufe: " + str(amount),
                       "Verbessern zu +" + str(amount+1) + " Menschen für:",
-                      str(amount * 10) + " Gold",
-                      str(amount * 10) + " Holz",
-                      "5 Nahrung",
-                      "0 Bevölkerung",
+                      str(wer.gold) + " Gold",
+                      str(wer.wood) + " Holz",
+                      str(wer.food) + " Nahrung",
+                      str(wer.human) + " Bevölkerung",
                       ]
 
             for i in range(0, 6):
