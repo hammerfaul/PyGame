@@ -1,6 +1,7 @@
 from config import *
 
 import pygame
+import math
 
 class Base:
     def __init__(self, display, player, img, color):
@@ -29,6 +30,8 @@ class Base:
         text = myfont.render(str(self.hp), False, (0, 0, 0))
         text_width = text.get_width()
         if self.player == 1:
+            self.x = int(self.base_breite / 2)
+            self.y = int(self.base_hoehe / 2)
             self.display.blit(self.base, (int(self.base_breite / 2), int(self.base_hoehe / 2)))
             if self.hp != 0:
                 pygame.draw.rect(self.display, self.color,
@@ -43,6 +46,8 @@ class Base:
                               (int(self.base_breite / 2 + self.base_breite / 2 - text_width / 2),
                                int(self.base_hoehe / 2 - 1)))
         else:
+            self.x = int(screen_width - self.base_breite * 3 / 2)
+            self.y = int(screen_height - breite_unten - self.base_hoehe * 3 / 2)
             self.display.blit(self.base, (
                 int(screen_width - self.base_breite * 3 / 2),
                 int(screen_height - breite_unten - self.base_hoehe * 3 / 2)))
@@ -81,13 +86,87 @@ class Spawn:
         self.base_breite = self.base.get_size()[0]
         self.base_hoehe = self.base.get_size()[1]
 
-    def update(self, x, y):
+    def update(self):
         self.progress = self.hp / self.max_hp
         if self.hp < 0:
             self.hp = 0
         if self.visible:
-            self.display.blit(self.base, (int(x), int(y)))
+            self.display.blit(self.base, (self.x, self.y))
 
     def visible(self, visible):
         self.visible = visible
 
+    def move(self, targetx, targety):
+        if self.x < targetx and self.y == targety:
+            if targetx - self.x < m_speed:
+                self.x = targetx
+            else:
+                self.x += m_speed
+        elif self.y < targety and self.x == targetx:
+            if targety - self.y < m_speed:
+                self.y = targety
+            else:
+                self.y += m_speed
+        elif self.y > targety and self.x == targetx:
+            if self.y - targety < m_speed:
+                self.y = targety
+            else:
+                self.y -= m_speed
+        elif self.x > targetx and self.y == targety:
+            if self.x - targetx < m_speed:
+                self.x = targetx
+            else:
+                self.x -= m_speed
+
+        elif self.x < targetx and self.y < targety:
+            if targetx - self.x < m_speed and not (targety - self.y < m_speed):
+                self.x = targetx
+                self.y += math.sqrt(m_speed)
+            elif targetx - self.x < m_speed and targety - self.y < m_speed:
+                self.x = targetx
+                self.y = targety
+            elif not(targetx - self.x < m_speed) and targety - self.y < m_speed:
+                self.y = targety
+                self.x += math.sqrt(m_speed)
+            else:
+                self.x += math.sqrt(m_speed)
+                self.y += math.sqrt(m_speed)
+        elif self.x < targetx and self.y > targety:
+            if targetx - self.x < m_speed and not (self.y - targety < m_speed):
+                self.x = targetx
+                self.y -= math.sqrt(m_speed)
+            elif targetx - self.x < m_speed and self.y - targety < m_speed:
+                self.x = targetx
+                self.y = targety
+            elif not (targetx - self.x < m_speed) and self.y - targety < m_speed:
+                self.y = targety
+                self.x -= math.sqrt(m_speed)
+            else:
+                self.x += math.sqrt(m_speed)
+                self.y -= math.sqrt(m_speed)
+        elif self.x > targetx and self.y < targety:
+            if self.x - targetx < m_speed and not (targety - self.y < m_speed):
+                self.x = targetx
+                self.y += math.sqrt(m_speed)
+            elif self.x - targetx < m_speed and targety - self.y < m_speed:
+                self.x = targetx
+                self.y = targety
+            elif not (self.x - targetx < m_speed) and targety - self.y < m_speed:
+                self.y = targety
+                self.x -= math.sqrt(m_speed)
+            else:
+                self.x -= math.sqrt(m_speed)
+                self.y += math.sqrt(m_speed)
+        elif self.x > targetx and self.y > targety:
+            if self.x - targetx < m_speed and not (targety - self.y < m_speed):
+                self.x = targetx
+                self.y -= math.sqrt(m_speed)
+            elif self.x - targetx < m_speed and targety - self.y < m_speed:
+                self.x = targetx
+                self.y = targety
+            elif not (self.x - targetx < m_speed) and targety - self.y < m_speed:
+                self.y = targety
+                self.x -= math.sqrt(m_speed)
+            else:
+                self.x -= math.sqrt(m_speed)
+                self.y -= math.sqrt(m_speed)

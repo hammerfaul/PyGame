@@ -37,3 +37,6 @@ myfont_menu = pygame.font.SysFont('gillsans', 30)
 myfont_button = pygame.font.SysFont('arial', int(breite_unten / 2))
 myfont_ressourcen = pygame.font.SysFont('gillsans', int(breite_unten / 2))
 myfont_pause = pygame.font.SysFont('gillsans', 120)
+
+#minions
+m_speed = 0.4

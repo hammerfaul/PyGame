@@ -10,10 +10,19 @@ from figures import *
 pygame.init()
 pygame.font.init()
 
+minions_alive = 0
+minions = []
+number_minions = 10
+
 def button_1():
     if Gold.amount >= 50:
         Gold.amount -= 50
-        einheiten[0].visible = True
+        global minions
+        global minions_alive
+        minions[minions_alive].visible = True
+        minions[minions_alive].x = base_1.x+60
+        minions[minions_alive].y = base_1.y+30
+        minions_alive += 1
         Info.newmessage(text="Speer gespawnt")
     else:
         Info.newmessage(text="Nicht genug Gold: " + str(Gold.amount) + "/50")
@@ -108,7 +117,8 @@ def spielstart(spielaktiv):
     now = datetime.now()
     current_time = now.strftime("%H:%M:%S")
 
-    einheiten = [Spawn(x=50, y=50, img="resources/speer.png", player=1, display=screen, visible=False)]
+    for i in range(number_minions):
+        minions.append(Spawn(x=50, y=50, img="resources/speer.png", player=1, display=screen, visible=False))
 
     while spielaktiv:
 
@@ -260,7 +270,10 @@ def spielstart(spielaktiv):
         base_1.update()
         base_2.update()
 
-        einheiten[0].update(x=50, y=50)
+        for i in range(number_minions):
+            if minions[i].visible:
+                minions[i].move(targetx=base_2.x-35, targety=base_2.y+15)
+            minions[i].update()
 
         pygame.display.flip()
         clock.tick(60)
