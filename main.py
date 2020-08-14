@@ -73,7 +73,7 @@ def button_2():
         minions[minions_alive].y = base_1.y + 30
         minions[minions_alive].speed = Berserk.speed
         minions[minions_alive].base = pygame.image.load("resources/beserker red.png")
-        minions[minions_alive].base = pygame.transform.scale(minions[minions_alive].base, (39, 39))
+        minions[minions_alive].base = pygame.transform.scale(minions[minions_alive].base, (50, 50))
         minions_alive += 1
         Info.newmessage(text="Beserker gespawnt")
     else:
@@ -93,7 +93,7 @@ def button_3():
         minions[minions_alive].y = base_1.y + 30
         minions[minions_alive].speed = Archer.speed
         minions[minions_alive].base = pygame.image.load("resources/archer red.png")
-        minions[minions_alive].base = pygame.transform.scale(minions[minions_alive].base, (42, 42))
+        minions[minions_alive].base = pygame.transform.scale(minions[minions_alive].base, (50, 50))
         minions_alive += 1
         Info.newmessage(text="Bogenschütze gespawnt")
     else:
@@ -133,7 +133,7 @@ def button_5():
         minions[minions_alive].y = base_1.y + 30
         minions[minions_alive].speed = Knight.speed
         minions[minions_alive].base = pygame.image.load("resources/knight red.png")
-        minions[minions_alive].base = pygame.transform.scale(minions[minions_alive].base, (35, 35))
+        minions[minions_alive].base = pygame.transform.scale(minions[minions_alive].base, (50, 50))
         minions_alive += 1
         Info.newmessage(text="Ritter gespawnt")
     else:
@@ -153,7 +153,7 @@ def button_6():
         minions[minions_alive].y = base_1.y + 30
         minions[minions_alive].speed = Mage.speed
         minions[minions_alive].base = pygame.image.load("resources/mage red.png")
-        minions[minions_alive].base = pygame.transform.scale(minions[minions_alive].base, (60, 60))
+        minions[minions_alive].base = pygame.transform.scale(minions[minions_alive].base, (50, 50))
         minions_alive += 1
         Info.newmessage(text="Magier gespawnt")
     else:
@@ -173,7 +173,7 @@ def button_7():
         minions[minions_alive].y = base_1.y + 30
         minions[minions_alive].speed = Priest.speed
         minions[minions_alive].base = pygame.image.load("resources/priest red.png")
-        minions[minions_alive].base = pygame.transform.scale(minions[minions_alive].base, (40, 40))
+        minions[minions_alive].base = pygame.transform.scale(minions[minions_alive].base, (50, 50))
         minions_alive += 1
         Info.newmessage(text="Priester gespawnt")
     else:
